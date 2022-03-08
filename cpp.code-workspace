@@ -36,6 +36,7 @@
         "options": {
           "cwd": "${fileDirname}"
         },
+	// Will probably have to use make to include header files and have fun
         "command": "g++",
         // prettier-ignore
         "windows": {
