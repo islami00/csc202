@@ -5,7 +5,8 @@
             "includePath": [
                 "${default}",
                 "${workspaceFolder}/ubuntu/lib",
-                "${workspaceFolder}/ubuntu/src/lib"
+                "${workspaceFolder}/ubuntu/src/lib",
+                "${workspaceFolder}/ubuntu"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",

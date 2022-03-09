@@ -1,8 +1,5 @@
 {
-  "folders": [
-    { "path": "." },
-    { "path": "../csc201/try-automate" }
-  ],
+  "folders": [{ "path": "." }, { "path": "../csc201/try-automate" }],
 
   "settings": {
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
@@ -36,7 +33,6 @@
         "options": {
           "cwd": "${fileDirname}"
         },
-	// Will probably have to use make to include header files and have fun
         "command": "g++",
         // prettier-ignore
         "windows": {
@@ -104,6 +100,92 @@
           "isDefault": true
         },
         "problemMatcher": ["$gcc"]
+      },
+      {
+        "label": "Assemble main",
+        "type": "shell",
+        "options": {
+          "cwd": "${workspaceFolder}/ubuntu"
+        },
+                "presentation": {
+          "echo": true,
+          "reveal": "silent",
+          "focus": false,
+          "panel": "dedicated",
+          "showReuseMessage": true,
+          "clear": true
+        },
+        // Take the file name and use as arg
+        "command": "cat ${file} | sh ./init.sh -",
+        "windows": {
+          "command": "echo You are on windows, and make does not work here"
+        }
+      },
+      {
+        "label": "Make main",
+        "type": "shell",
+        "options": {
+          "cwd": "${workspaceFolder}/ubuntu"
+        },
+        "command": "make",
+        "windows": {
+          "command": "echo 'You are on windows, and make does not work here. Install WSL and rerun'"
+        },
+        "presentation": {
+          "echo": true,
+          "reveal": "silent",
+          "focus": false,
+          "panel": "dedicated",
+          "showReuseMessage": true,
+          "clear": true
+        },
+        "dependsOn": ["Assemble main"],
+        "dependsOrder": "sequence",
+        "problemMatcher": ["$gcc"]
+      },
+      {
+        "label": "Run main",
+        "type": "shell",
+        "options": {
+          "cwd": "${workspaceFolder}/ubuntu/src"
+        },
+        "command": "./main",
+
+        "windows": {
+          "command": "echo 'You are on windows, and make does not work here. Install WSL and rerun'"
+        },
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "dedicated",
+          "showReuseMessage": true,
+          "clear": false
+        },
+        "dependsOn": ["Make main"],
+        "problemMatcher": ["$gcc"]
+      },
+      {
+        "label": "Clean main",
+        "type": "shell",
+        "options": {
+          "cwd": "${workspaceFolder}/ubuntu"
+        },
+
+        "windows": {
+          "command": "echo 'You are on windows, and make does not work here. Install WSL and rerun'"
+        },
+        "command": "make clean",
+        "presentation": {
+          "echo": true,
+          "reveal": "silent",
+          "focus": false,
+          "panel": "dedicated",
+          "showReuseMessage": true,
+          "clear": true
+        },
+        "dependsOn": ["Run main"],
+        "problemMatcher": []
       }
     ]
   },
