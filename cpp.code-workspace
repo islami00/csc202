@@ -1,7 +1,7 @@
 {
   "folders": [
-    { "path": "." }
-    // { "path": "./try-automate" }
+    { "path": "." },
+    { "path": "../csc201/try-automate" }
   ],
 
   "settings": {
