@@ -22,5 +22,7 @@ This has been adopted to the tasks `Run Main` and `Clean Main`.
 To this stackoverflow for lib ans: https://stackoverflow.com/questions/30677198/automake-third-party-libraries
 Also look up include dirs with that
 
-# Hey there
+# Compatibility.
+
+The use of modules here primarily has linux in mind for compatibility. I still left the old tasks from `csc201` for use. Hence, you can opt to use them instead and take note where local imports are used.
 
