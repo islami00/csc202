@@ -1,4 +1,10 @@
+# Custom gis
 
+main
+main-main.o
+main-lib.o
+
+## End Custom GI
 # Created by https://www.toptal.com/developers/gitignore/api/autotools
 # Edit at https://www.toptal.com/developers/gitignore?templates=autotools
 

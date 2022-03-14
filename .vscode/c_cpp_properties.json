@@ -4,7 +4,6 @@
             "name": "Linux",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/ubuntu/lib",
                 "${workspaceFolder}/ubuntu/src/lib",
                 "${workspaceFolder}/ubuntu"
             ],
@@ -12,7 +11,8 @@
             "compilerPath": "/usr/bin/g++",
             "cStandard": "c11",
             "cppStandard": "c++14",
-            "intelliSenseMode": "linux-gcc-x64"
+            "intelliSenseMode": "linux-gcc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
     "version": 4

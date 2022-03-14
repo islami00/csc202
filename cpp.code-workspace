@@ -1,5 +1,5 @@
 {
-  "folders": [{ "path": "." }, { "path": "../csc201/try-automate" }],
+  "folders": [{ "path": "." }],
 
   "settings": {
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
@@ -185,6 +185,27 @@
           "clear": true
         },
         "dependsOn": ["Run main"],
+        "problemMatcher": []
+      },
+       {
+        "label": "Clean main -- only",
+        "type": "shell",
+        "options": {
+          "cwd": "${workspaceFolder}/ubuntu"
+        },
+
+        "windows": {
+          "command": "echo 'You are on windows, and make does not work here. Install WSL and rerun'"
+        },
+        "command": "make clean",
+        "presentation": {
+          "echo": true,
+          "reveal": "silent",
+          "focus": false,
+          "panel": "dedicated",
+          "showReuseMessage": true,
+          "clear": true
+        },
         "problemMatcher": []
       }
     ]
