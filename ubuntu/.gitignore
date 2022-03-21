@@ -1,5 +1,5 @@
 # Custom gis
-
+.vscode/*.log
 main
 main-main.o
 main-lib.o

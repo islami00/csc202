@@ -1,5 +1,5 @@
 {
-  "folders": [{ "path": "." }],
+  "folders": [{ "path": "./ubuntu" }],
 
   "settings": {
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
@@ -20,7 +20,8 @@
       "editor.semanticHighlighting.enabled": true
     },
     "files.associations": {
-      "*.md": "markdown"
+      "*.md": "markdown",
+      "iostream": "cpp"
     }
   },
 
@@ -105,7 +106,7 @@
         "label": "Assemble main",
         "type": "shell",
         "options": {
-          "cwd": "${workspaceFolder}/ubuntu"
+          "cwd": "${workspaceFolder}"
         },
                 "presentation": {
           "echo": true,
@@ -125,7 +126,7 @@
         "label": "Make main",
         "type": "shell",
         "options": {
-          "cwd": "${workspaceFolder}/ubuntu"
+          "cwd": "${workspaceFolder}"
         },
         "command": "make",
         "windows": {
@@ -147,7 +148,7 @@
         "label": "Run main",
         "type": "shell",
         "options": {
-          "cwd": "${workspaceFolder}/ubuntu/src"
+          "cwd": "${workspaceFolder}/src"
         },
         "command": "./main",
 
@@ -169,7 +170,7 @@
         "label": "Clean main",
         "type": "shell",
         "options": {
-          "cwd": "${workspaceFolder}/ubuntu"
+          "cwd": "${workspaceFolder}"
         },
 
         "windows": {
@@ -191,7 +192,7 @@
         "label": "Clean main -- only",
         "type": "shell",
         "options": {
-          "cwd": "${workspaceFolder}/ubuntu"
+          "cwd": "${workspaceFolder}"
         },
 
         "windows": {
