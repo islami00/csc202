@@ -1,9 +1,7 @@
 # Custom gis
 .vscode/*.log
 main
-main-main.o
-main-lib.o
-
+*.o
 ## End Custom GI
 # Created by https://www.toptal.com/developers/gitignore/api/autotools
 # Edit at https://www.toptal.com/developers/gitignore?templates=autotools
