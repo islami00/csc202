@@ -5,28 +5,13 @@
 // last index. We also take max as the max size of the array, not the last
 // index. LB is both the least size and start index of the array.
 
-//
 /**
  * Insert at a specific index.
  * UB is passed as a pointer because it is changed while inserting.
  */
 int insertAtIndex(int arr[], int* UB, int index, int element);
-/** Wrapper for insertAt zero */
-int insertAtBeginning(int arr[], int* UB, int element);
-/** Wrapper for insertAt UB /  2. */
-int insertAtMiddle(int arr[], int* UB, int element);
-/** Wrapper for insertAt UB */
-int insertAtEnd(int arr[], int* UB, int element);
-/**
- * Delete an element at a specific index.
- * */
+/** Delete an element at a specific index. */
 int deleteAtIndex(int arr[], int* UB, int index);
-/** Wrapper for deleteAt zero */
-int deleteAtBeginning(int arr[], int* UB);
-/** Wrapper for deleteAt UB / 2 */
-int deleteAtMiddle(int arr[], int* UB);
-/** Wrapper for deleteAt UB */
-int deleteAtEnd(int arr[], int* UB);
 
 int main() {
   for (size_t i = 1; i <= 6; i++) {
@@ -36,32 +21,32 @@ int main() {
     // 1. Insert at beginning
     if (i == 1) {
       printf("Inserting at beginning\n");
-      res = insertAtBeginning(test, &_UB, 22);
+      res = insertAtIndex(test, &_UB, 0, 22);
     }
     // 2. Insert at middle
     if (i == 2) {
       printf("Inserting at middle\n");
-      res = insertAtMiddle(test, &_UB, 22);
+      res = insertAtIndex(test, &_UB, _UB / 2, 22);
     }
     // 3. Insert at end
     if (i == 3) {
       printf("Inserting at end\n");
-      res = insertAtEnd(test, &_UB, 22);
+      res = insertAtIndex(test, &_UB, _UB, 22);
     }
     // 4. Delete at beginning
     if (i == 4) {
       printf("Deleting at beginning\n");
-      res = deleteAtBeginning(test, &_UB);
+      res = deleteAtIndex(test, &_UB, 0);
     }
     // 5. Delete at middle
     if (i == 5) {
       printf("Deleting at middle\n");
-      res = deleteAtMiddle(test, &_UB);
+      res = deleteAtIndex(test, &_UB, _UB / 2);
     }
     // 6. Delete at end
     if (i == 6) {
       printf("Deleting at end\n");
-      res = deleteAtEnd(test, &_UB);
+      res = deleteAtIndex(test, &_UB, _UB);
     }
     // Output.
     if (res == 1)
@@ -95,16 +80,7 @@ int insertAtIndex(int arr[], int* UB, int index, int element) {
   *UB = (*UB) + 1;
 
   return 0;
-};
-int insertAtBeginning(int arr[], int* UB, int element) {
-  return insertAtIndex(arr, UB, 0, element);
-};
-int insertAtMiddle(int arr[], int* UB, int element) {
-  return insertAtIndex(arr, UB, (*UB) / 2, element);
-};
-int insertAtEnd(int arr[], int* UB, int element) {
-  return insertAtIndex(arr, UB, *UB, element);
-};
+}
 
 int deleteAtIndex(int arr[], int* UB, int index) {
   if ((*UB) == LB) return 1;                    // Underflow
@@ -123,8 +99,3 @@ int deleteAtIndex(int arr[], int* UB, int index) {
   *UB = (*UB) - 1;
   return 0;
 };
-int deleteAtBeginning(int arr[], int* UB) { return deleteAtIndex(arr, UB, 0); };
-int deleteAtMiddle(int arr[], int* UB) {
-  return deleteAtIndex(arr, UB, (*UB) / 2);
-};
-int deleteAtEnd(int arr[], int* UB) { return deleteAtIndex(arr, UB, *UB); };
