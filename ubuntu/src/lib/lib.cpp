@@ -1,7 +1,5 @@
 #include "lib.h"
 
-#include <iostream>
-
 namespace my_utils {
 int sum(int a, int b) {
   int c = a + b;
@@ -43,6 +41,26 @@ bool is_non_negative(int number) {
     return true;
   }
   return false; 
+};
+void prettyPrint(int arr[], size_t arr_size) {
+  size_t lastIndex = arr_size - 1;
+  for (size_t i = 0; i < arr_size; i++) {
+    if (i == 0)
+      std::cout << "[" << arr[i];
+    else if (i == lastIndex)
+      std::cout << "," << arr[i] << "]";
+    else
+      std::cout << "," << arr[i];
+  }
+}
+
+bool arr_eq(int arr1[], int arr2[], int arr1_size, int arr2_size) {
+  if (arr1_size != arr2_size) return false;
+  bool eq = arr1[0] == arr2[0];
+  for (int i = 0; (i < arr1_size) && eq; i++) {
+    eq = eq && (arr1[i] == arr2[i]);
+  }
+  return eq;
 };
 
 // Stack::Stack() {

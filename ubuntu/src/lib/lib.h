@@ -1,6 +1,7 @@
 #ifndef LIB_H
 #define LIB_H
 
+#include <iostream>
 namespace my_utils {
 /**
  * Add two numbers
@@ -31,7 +32,15 @@ char find_grades(int score);
  * @return   success.
  */
 bool is_non_negative(int number);
-
+/**
+ * @brief Pretty print and array of integers
+ * */
+void prettyPrint(int arr[], size_t arr_size);
+/**
+ * @brief Checks if two arrays of the same length are equal. You specify length
+ * so you don't mix it up.
+ * */
+bool arr_eq(int arr1[], int arr2[], int arr1_size, int arr2_size);
 #define MAX_STACK_SIZE 4
 /**
  * Example stack impl in cpp
@@ -48,6 +57,7 @@ class Stack {
   int push(int item);
   int pop();
 };
+
 }  // namespace my_utils
 
 #endif  // !
