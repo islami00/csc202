@@ -4,12 +4,13 @@ using namespace std;
 
 /**
  * Simple solution: Copy to new arr after applying the mapping.
- * ShiftRightMapping := i -> (i + n) % size for all  i in IndexSet(size-1);
+ * ShiftRightMapping := i -> (i + n) % size for all  i in validIndexSet
  * Mutates input array.
  * */
 void shiftRight(int arr[], int size, int n);
 void initTest(int arr[]);
 void tests(char testStr[20]);
+int modulo(int num, int base);
 int main() {
   char input[20];
   int success = 0, failures = 0, n = 0;
@@ -20,23 +21,23 @@ int main() {
   cout << "Tests failed: " << failures << "\n";
   return 0;
 }
+int modulo(int num, int base) {
+  int baseMod = num % base;
+  int modulo = baseMod;
+  if (modulo < 0) modulo = modulo + base;
+  return modulo;
+};
 
 void shiftRight(int arr[], int size, int n) {
-  int clean =
-      n % size;  // Shift n times has same effect as shift n % size times;
-
-  if (n < 0) {
-    // Negative shift right is a shift left which is equivalent (at least for
-    // the first) to shifting to end. Or rather, modulo.
-    clean = n + size;
-  }
+  // Shift n times has same effect as shift n % size times;
+  int cleanN = modulo(n, size);
   int resArr[size];
   for (size_t i = 0; i < size; i++) {
-    //   Apply mapping
-    int map = (i + clean) % size;
+    //   Apply mapping. Modulo size to ensure we don't overflow bounds.
+    int map = (i + cleanN) % size;
     resArr[map] = arr[i];
   }
-  //   Copy into arr
+  //   Copy into original arr
   for (size_t i = 0; i < size; i++) {
     arr[i] = resArr[i];
   }
