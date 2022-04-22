@@ -5,54 +5,52 @@ struct Node {
   struct Node *next;
 };
 typedef struct Node Node;
-// Segmentation fault also occurs when you try to access undefined/unallocated
-// areas of mem
+// Note: Segmentation fault also occurs when you try to access
+// undefined/unallocated areas of mem. E.g creating and object and accessing props before giving value throws undefined err in js. But not here
 
 /**Util for printing node*/
 void printNode(Node *nodeRef, char name[40]);
 
 int main() {
   Node *head = (Node *)malloc(sizeof(Node));
-  Node *second = (Node *)malloc(sizeof(Node));
   head->data = 1;
-  head->next = second;
-  char name[40] = "head";
+  head->next = (Node *)malloc(sizeof(Node));
+  char name[40] = "Head";
   printNode(head, name);
 
-  second->data = 2;
-  second->next = (Node *)malloc(sizeof(Node));
-  sprintf(name, "second");
-  printNode(second, name);
-  sprintf(name, "Nth");
-
   // Each time you traverse, start with a ref to the node then modify that ref.
-  Node *nth = second->next;
-  for (int i = 3; i <= 4; i++) {
+  // Here, we are filling up the list till "end"
+  Node *cursor1 = head->next;
+  int end = 6;
+  sprintf(name, "Nth");
+  for (int i = 2; i <= end; i++) {
     // Fill in data for current node.
-    nth->data = i;
-    if (i == 4) {
-      // Base case
-      nth->next = NULL;
-      printNode(nth, name);
+    cursor1->data = i;
+    // Base case
+    if (i == end) {
+      cursor1->next = NULL;
+      sprintf(name, "Tail");
+      printNode(cursor1, name);
       break;
     }
     // Allocate mem for next node,
-    nth->next = (Node *)malloc(sizeof(Node));
-    printNode(nth, name);
+    cursor1->next = (Node *)malloc(sizeof(Node));
+    printNode(cursor1, name);
     // Go forward by one space
-    nth = nth->next;
+    cursor1 = cursor1->next;
   }
   // Finally print.
-  printf("Traversing and printing nodes...\n");
-  sprintf(name, "head");
-  Node *cursor = head;
-  for (int j = 0; j < 4; j++) {
-    printNode(cursor, name);
-    if (j == 1)
-      sprintf(name, "second");
-    else
-      sprintf(name, "nth");
-    cursor = cursor->next;
+  printf("\n\tTraversing and printing nodes...\n\n");
+  sprintf(name, "Head");
+  Node *cursor2 = head;
+  for (int j = 0; j < end; j++) {
+    if (j != 0) {
+      sprintf(name, "Nth");
+      if (j == (end - 1))
+        sprintf(name, "Tail");
+    }
+    printNode(cursor2, name);
+    cursor2 = cursor2->next;
   }
 
   return 0;
