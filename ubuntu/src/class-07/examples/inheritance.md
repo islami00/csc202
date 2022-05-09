@@ -1,0 +1,3 @@
+### Pure virtuals
+
+Pure virtuals act like interfaces from ts. Except, these are actual objects in runtime. A pure virtual is a function that is assigned to null (or without a body or impl. , just assigned to zero) on the base class (Does nothing) , creating an abstract class that other children can inherit from while keeping the constraints. We use `=0` so it does nothing. And `virtual` to allow derived classes to override it without issue.
