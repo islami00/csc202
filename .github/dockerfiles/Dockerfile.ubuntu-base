@@ -1,0 +1,6 @@
+# FROM  gitpod/workspace-full
+# For local:
+# # https://askubuntu.com/questions/430706/installing-autotools-autoconf-on-ubuntu https://developer.fedoraproject.org/tech/languages/c/autotools.html
+# ARG PKGS="autotools-dev autoconf automake"
+
+# RUN sudo apt-get install ${PKGS} -y

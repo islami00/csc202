@@ -1,0 +1,13 @@
+# image:
+#   file: .github/dockerfiles/Dockerfile.ubuntu-base
+#   context: .github
+tasks:
+  - name: Initial setup
+    init: sh scripts/init.sh
+  - name: Run last main
+    init: gp sync-await setup
+    command: ./ubuntu/src/main 
+
+vscode:
+  extensions:
+    - llvm-vs-code-extensions.vscode-clangd
