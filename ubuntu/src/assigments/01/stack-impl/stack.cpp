@@ -17,6 +17,7 @@ class Stack {
   bool isEmpty();
   bool isFull();
   int change(int element, int position);
+  void display();
 };
 
 Stack::Stack() { top = -1; }
@@ -61,6 +62,13 @@ bool Stack::isFull() {
   if ((top + 1) == STACK_SIZE) return true;
   return false;
 }
+//   display -- show all elements on the stack
+void Stack::display() {
+  for (size_t i = 0; i < STACK_SIZE; i++) {
+    cout << "stack[" << i << "]"
+         << " = " << elements[i] << '\n';
+  }
+}
 //   Unnatural ---
 //   change() -- Replace el at position
 int Stack::change(int element, int position) {
@@ -86,6 +94,10 @@ int Stack::change(int element, int position) {
 using namespace std;
 int test();
 int main() { return test(); }
+
+int menuTest() {
+  //  create a switch-case menu for each stack method
+}
 int test() {
   Stack st1 = Stack();
   // peek
