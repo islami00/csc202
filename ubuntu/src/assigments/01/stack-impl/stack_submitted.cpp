@@ -179,74 +179,8 @@ int getChoice() {
   cout << "3. Pop" << endl;
   cout << "4. Change" << endl;
   cout << "5. Display" << endl;
-  cout << "6. isEmpty" << endl;
-  cout << "7. isFull" << endl;
-  cout << "8. Exit" << endl;
+  cout << "6. Exit" << endl;
   cout << "Enter your choice: ";
   cin >> choice;
   return choice;
-}
-int test() {
-  Stack st1 = Stack();
-  // peek
-  bool peekWorks = false;
-  try {
-    st1.peek();
-  } catch (const std::exception& e) {
-    // Errs as required
-    // std::cerr << e.what() << '\n';
-    peekWorks = true;
-  }
-  if (!peekWorks) {
-    throw std::logic_error("Peek didn't fail in empty state");
-  }
-  // isEmpty
-  if (!st1.isEmpty()) {
-    throw std::logic_error("isEmpty fails to recognize an empty stack");
-  }
-  // push
-  int res1 = st1.push(1);
-  int res2 = st1.push(2);
-  int res3 = st1.push(3);
-  int res4 = st1.push(3);
-
-  bool pushWorks =
-      !res1 && !res2 && !res3 && (res4 == 1);  // all return 0, and last errs;
-  if (!pushWorks) {
-    cout << "Individual push returns: " << res1 << ", " << res2 << ", " << res3
-         << ", " << res4 << '\n';
-    throw std::logic_error("Push is broken");
-  }
-  // isFull
-  if (!st1.isFull()) {
-    throw std::logic_error("isFull is broken in full state");
-  }
-  // pop
-  int one, two, three;
-  bool popWorks = false;
-  try {
-    one = st1.pop();
-    two = st1.pop();
-    three = st1.pop();
-    st1.pop();
-  } catch (const std::logic_error& e) {
-    // Should throw at n. Hence, popWorks should be set to true. Only value
-    // checks
-    popWorks = (one == 1) && (two == 2) && (three == 3);
-  }
-  if (!st1.isEmpty()) {
-    if (popWorks) cout << "Pop elements are being returned as expected";
-    throw std::logic_error("pop is broken");
-  }
-  // change
-  st1.push(1);
-  st1.push(2);
-  int n = st1.change(-1, 0);
-  st1.pop();
-  signed int minusOne = st1.pop();
-  bool changeWorks = (minusOne == -1) && (n == 0);
-  if (!changeWorks) {
-    throw std::logic_error("Change is broken");
-  }
-  return 0;
 }
