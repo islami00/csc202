@@ -2,6 +2,8 @@
 .vscode/*.log
 main
 *.o
+src/main.cpp
+
 ## End Custom GI
 # Created by https://www.toptal.com/developers/gitignore/api/autotools
 # Edit at https://www.toptal.com/developers/gitignore?templates=autotools
