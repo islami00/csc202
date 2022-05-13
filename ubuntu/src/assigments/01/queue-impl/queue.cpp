@@ -15,6 +15,7 @@ class Queue {
   bool isFull();
   bool isEmpty();
   void display();
+  int count();
 };
 
 //   The queue starts off empty.
@@ -77,6 +78,12 @@ void Queue::display() {
 
   std::cout << "\n";
 }
+//   count
+int Queue::count() {
+  // Cover case where end=front=-1
+  if (isEmpty()) return 0;
+  return end - front + 1;
+}
 int test();
 int main() { return test(); }
 int test() {
@@ -89,6 +96,8 @@ int test() {
   q.enqueue(1);
   q.enqueue(2);
   q.enqueue(3);
+  //    Check how many items are in our queue
+  int count = q.count();
   int enqueueRetCode = q.enqueue(4);
   bool enqueueOverflowGuardWorks = enqueueRetCode == 1;
   if (!q.isFull()) {
@@ -96,6 +105,9 @@ int test() {
   }
   if (!enqueueOverflowGuardWorks) {
     throw std::logic_error("Enqueue does not handle overflow");
+  }
+  if (count != 3) {
+    throw std::logic_error("Count failed on a queue with 3 items");
   }
   //   Should see a pretty full queue on screen
   q.display();
