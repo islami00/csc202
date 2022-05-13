@@ -5,6 +5,7 @@
 class Stack {
  private:
   int top;
+  //  It has fixed size
   int elements[STACK_SIZE];
 
  public:
@@ -18,17 +19,14 @@ class Stack {
   int change(int element, int position);
 };
 
-//  It has fixed size, as specified by caller
-
 Stack::Stack() { top = -1; }
 Stack::~Stack() {}
 
 //  It has methods
-
 //   Pop allows us to take an element off the top
 int Stack::pop() {
   if (isEmpty()) {
-    return -1;
+    throw std::logic_error("Trying to pop an empty stack");
   };
   int t = elements[top];
   elements[top] = 0;
@@ -38,11 +36,12 @@ int Stack::pop() {
 //   peek allows us to check the topmost element
 int Stack::peek() {
   if (isEmpty()) {
-    return -1;
+    throw std::logic_error("Trying to peek an empty stack");
+    // return -1;
   };
   return elements[top];
 }
-// Push allows us to put an element on the stack
+//   Push allows us to put an element on the stack
 int Stack::push(int element) {
   if (isFull()) {
     return -1;
@@ -80,61 +79,69 @@ int Stack::change(int element, int position) {
 
 // #[test]
 // Little thingies about my stack:
-// NEVER store -1 on the stack.
 // NEVER store 0 on the stack.
-// Shift all values forward by one or two if you fear one or both to ensure your
-// domain is strictly positive. -1 is used for error in functions that return a
-// value. and 0 is the default value.
+// Shift all values forward by one if you fear you'll encounter 0 to ensure your
+// domain is strictly positive, because 0 is the default value.
 #include <string>
 using namespace std;
 int main() {
   Stack st1 = Stack();
-  int n = st1.peek();
-  bool peekWorks = n == -1;
+  // peek
+  bool peekWorks = false;
+  try {
+    st1.peek();
+  } catch (const std::exception& e) {
+    // Errs as required
+    // std::cerr << e.what() << '\n';
+    peekWorks = true;
+  }
   if (!peekWorks) {
-    cout << "Peek didn't fail in empty state";
-    return 1;
+    throw std::logic_error("Peek didn't fail in empty state");
   }
-  n = st1.isEmpty();
-  bool isEmptyWorks = n != -1;
-  if (!isEmptyWorks) {
-    cout << "isEmpty fails in empty state";
-    return 2;
+  // isEmpty
+  if (!st1.isEmpty()) {
+    throw std::logic_error("isEmpty fails to recognize an empty stack");
   }
+  // push
   int res1 = st1.push(1);
   int res2 = st1.push(2);
   int res3 = st1.push(3);
   bool pushWorks = !res1 && !res2 && !res3;  // all return 0;
   if (!pushWorks) {
-    cout << "Push is broken";
-    cout << "Individual push returns: " << res1 << " " << res2 << " " << res3;
-    return 3;
+    cout << "Individual push returns: " << res1 << " " << res2 << " " << res3
+         << '\n';
+    throw std::logic_error("Push is broken");
   }
+  // isFull
   if (!st1.isFull()) {
-    cout << "isFull is broken in full state";
-    return 4;
+    throw std::logic_error("isFull is broken in full state");
   }
-  int one = st1.pop();
-  int two = st1.pop();
-  int three = st1.pop();
-  n = st1.pop();
-  bool popWorks = (one == 1) && (two == 2) && (three == 3) && (n == -1);
+  // pop
+  int one, two, three;
+  bool popWorks = false;
+  try {
+    one = st1.pop();
+    two = st1.pop();
+    three = st1.pop();
+    st1.pop();
+  } catch (const std::logic_error& e) {
+    // Should throw at n. Hence, popWorks should be set to true. Only value
+    // checks
+    popWorks = (one == 1) && (two == 2) && (three == 3);
+  }
   if (!st1.isEmpty()) {
-    cout << "pop is broken";
-    if (popWorks) cout << "But the elements are being returned as expected";
-    return 5;
+    if (popWorks) cout << "Pop elements are being returned as expected";
+    throw std::logic_error("pop is broken");
   }
-
+  // change
   st1.push(1);
   st1.push(2);
-  n = st1.change(-1, 0);
-
+  int n = st1.change(-1, 0);
   st1.pop();
   signed int minusOne = st1.pop();
   bool changeWorks = (minusOne == -1) && (n == 0);
   if (!changeWorks) {
-    cout << "Change is broken";
+    throw std::logic_error("Change is broken");
   }
-
   return 0;
 }
