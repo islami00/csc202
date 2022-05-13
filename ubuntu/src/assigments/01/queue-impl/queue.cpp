@@ -90,6 +90,8 @@ int Queue::count() {
   if (isEmpty()) return 0;
   return end - front + 1;
 }
+
+using namespace std;
 int test();
 int menuTest();
 int get_input();
@@ -102,12 +104,12 @@ int menuTest() {
     choice = get_input();
     switch (choice) {
       case 1: {
-        std::cout << "Enter an element to enqueue: ";
+        cout << "Enter an element to enqueue: ";
         int element;
-        std::cin >> element;
+        cin >> element;
         int res = q.enqueue(element);
         if (res == 1) {
-          std::cout << "Error: Queue is full" << std::endl;
+          cout << "Error: Queue is full" << endl;
         }
         q.display();
         break;
@@ -115,9 +117,9 @@ int menuTest() {
       case 2:
         try {
           int dequeued = q.dequeue();
-          std::cout << "Dequeued: " << dequeued << "\n";
+          cout << "Dequeued: " << dequeued << "\n";
         } catch (std::logic_error e) {
-          std::cout << "Error: " << e.what() << "\n";
+          cout << "Error: " << e.what() << "\n";
         }
         q.display();
         break;
@@ -125,29 +127,29 @@ int menuTest() {
         q.display();
         break;
       case 4:
-        std::cout << "Count: " << q.count() << "\n";
+        cout << "Count: " << q.count() << "\n";
         break;
       case 5:
-        std::cout << "Queue is ";
+        cout << "Queue is ";
         if (q.isFull()) {
-          std::cout << "full\n";
+          cout << "full\n";
         } else {
-          std::cout << "not full\n";
+          cout << "not full\n";
         }
         break;
       case 6:
-        std::cout << "Queue is ";
+        cout << "Queue is ";
         if (q.isEmpty()) {
-          std::cout << "empty\n";
+          cout << "empty\n";
         } else {
-          std::cout << "not empty\n";
+          cout << "not empty\n";
         }
         break;
       case 7:
-        std::cout << "Quitting ... \n";
+        cout << "Quitting ... \n";
         break;
       default:
-        std::cout << "Error: Invalid choice\n";
+        cout << "Error: Invalid choice\n";
     }
   } while (choice != 7);
   return 0;
@@ -155,15 +157,15 @@ int menuTest() {
 int get_input() {
   // switch-case input corresponding to each method
   int input;
-  std::cout << "1. Enqueue\n";
-  std::cout << "2. Dequeue\n";
-  std::cout << "3. Display\n";
-  std::cout << "4. Count\n";
-  std::cout << "5. isFull\n";
-  std::cout << "6. isEmpty\n";
-  std::cout << "7. Quit\n";
-  std::cout << "Enter your choice: ";
-  std::cin >> input;
+  cout << "1. Enqueue\n";
+  cout << "2. Dequeue\n";
+  cout << "3. Display\n";
+  cout << "4. Count\n";
+  cout << "5. isFull\n";
+  cout << "6. isEmpty\n";
+  cout << "7. Quit\n";
+  cout << "Enter your choice: ";
+  cin >> input;
   return input;
 }
 int test() {
