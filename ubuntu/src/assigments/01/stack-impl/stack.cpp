@@ -4,7 +4,7 @@
 // We need a fixed size stack
 class Stack {
  private:
-  int top;
+  signed int top;
   //  It has fixed size
   int elements[STACK_SIZE];
 
@@ -64,9 +64,14 @@ bool Stack::isFull() {
 }
 //   display -- show all elements on the stack
 void Stack::display() {
-  for (size_t i = 0; i < STACK_SIZE; i++) {
-    cout << "stack[" << i << "]"
-         << " = " << elements[i] << '\n';
+  if (top == -1) {
+    std::cout << "Stack is empty" << std::endl;
+    return;
+  }
+  std::cout << "Stack: " << std::endl;
+  for (int i = 0; i <= top; i++) {
+    std::cout << "stack[" << i << "]"
+              << " = " << elements[i] << '\n';
   }
 }
 //   Unnatural ---
@@ -75,9 +80,9 @@ int Stack::change(int element, int position) {
   // 1. Underflow
   if (isEmpty()) return 1;
 
-  // 2. Underflow
+  // 2. Overflow
   if (position > top) return 2;
-  //   proof: top>position >= 0;
+  //   Invariant for swap: top > position >= 0;
   if (position < 0) return 3;
 
   // Else swap at pos.
@@ -93,10 +98,72 @@ int Stack::change(int element, int position) {
 #include <string>
 using namespace std;
 int test();
-int main() { return test(); }
+int getChoice();
+int menuTest();
+int main() { return menuTest(); }
 
 int menuTest() {
-  //  create a switch-case menu for each stack method
+  // Get choice and run stack methods based on it
+  int choice;
+  Stack s;
+  while (choice != 6) {
+    choice = getChoice();
+    switch (choice) {
+      case 1:
+        cout << "Enter the element to push onto the stack" << endl;
+        int element;
+        cin >> element;
+        s.push(element);
+        s.display();
+        break;
+      case 2:
+        cout << "The topmost element is: " << s.peek() << endl;
+        break;
+      case 3:
+        cout << "The element popped is: " << s.pop() << endl;
+        s.display();
+        break;
+      case 4: {
+        cout << "Enter the element to change with on the stack" << endl;
+        int element2;
+        cin >> element2;
+        cout << "Enter the position to change with on the stack" << endl;
+        int position;
+        cin >> position;
+        int stackChangeExitCode = s.change(element2, position);
+        if (stackChangeExitCode == 0) {
+          cout << "Element changed" << endl;
+        } else if (stackChangeExitCode == 1) {
+          cout << "Error: Underflow" << endl;
+        } else if (stackChangeExitCode == 2) {
+          cout << "Error: Overflow" << endl;
+        } else if (stackChangeExitCode == 3) {
+          cout << "Error: Invalid position" << endl;
+        }
+        s.display();
+        break;
+      }
+      case 5:
+        s.display();
+        break;
+      case 6:
+        cout << "Exiting..." << endl;
+        break;
+    }
+  }
+}
+int getChoice() {
+  // Switch-case menu for each stack method
+  int choice;
+  cout << "1. Push" << endl;
+  cout << "2. Peek" << endl;
+  cout << "3. Pop" << endl;
+  cout << "4. Change" << endl;
+  cout << "5. Display" << endl;
+  cout << "6. Exit" << endl;
+  cout << "Enter your choice: ";
+  cin >> choice;
+  return choice;
 }
 int test() {
   Stack st1 = Stack();
