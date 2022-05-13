@@ -41,22 +41,28 @@ void prettyPrint(int arr[], size_t arr_size);
  * so you don't mix it up.
  * */
 bool arr_eq(int arr1[], int arr2[], int arr1_size, int arr2_size);
-#define MAX_STACK_SIZE 4
+#define STACK_SIZE 3
 /**
  * Example stack impl in cpp
  * */
 class Stack {
-  /* data */
-  int length;
+ private:
+  signed int top;
+  //  It has fixed size
+  int elements[STACK_SIZE];
 
  public:
-  unsigned int st[MAX_STACK_SIZE];  // Stack of 4. Value limited to unsigned for
-                                    // pop method.
   Stack();
   ~Stack();
-  int push(int item);
   int pop();
+  int peek();
+  int push(int element);
+  bool isEmpty();
+  bool isFull();
+  int change(int element, int position);
+  void display();
 };
+
 
 }  // namespace my_utils
 

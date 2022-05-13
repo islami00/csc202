@@ -1,92 +1,18 @@
+#include <lib.h>
+
 #include <iostream>
-
-#define STACK_SIZE 3
-// We need a fixed size stack
-class Stack {
- private:
-  signed int top;
-  //  It has fixed size
-  int elements[STACK_SIZE];
-
- public:
-  Stack();
-  ~Stack();
-  int pop();
-  int peek();
-  int push(int element);
-  bool isEmpty();
-  bool isFull();
-  int change(int element, int position);
-  void display();
-};
-
-Stack::Stack() { top = -1; }
-Stack::~Stack() {}
-
-//  It has methods
-//   Pop allows us to take an element off the top
-int Stack::pop() {
-  if (isEmpty()) {
-    throw std::logic_error("Trying to pop an empty stack");
-  };
-  int t = elements[top];
-  elements[top] = 0;
-  top = top - 1;
-  return t;
-}
-//   peek allows us to check the topmost element
-int Stack::peek() {
-  if (isEmpty()) {
-    throw std::logic_error("Trying to peek an empty stack");
-    // return -1;
-  };
-  return elements[top];
-}
-//   Push allows us to put an element on the stack
-int Stack::push(int element) {
-  if (isFull()) {
-    return 1;
-  }
-  top = top + 1;
-  elements[top] = element;
-  return 0;
-}
-//   Convenience methods
-//   isEmpty
-bool Stack::isEmpty() {
-  if (top == -1) return true;
-  return false;
-}
-//   isFull
-bool Stack::isFull() {
-  if ((top + 1) == STACK_SIZE) return true;
-  return false;
-}
-//   display -- show all elements on the stack
-void Stack::display() {
-  if (top == -1) {
-    std::cout << "Stack is empty" << std::endl;
-    return;
-  }
-  std::cout << "Stack: " << std::endl;
-  for (int i = 0; i <= top; i++) {
-    std::cout << "stack[" << i << "]"
-              << " = " << elements[i] << '\n';
-  }
-}
-
 // #[test]
 // Stack test:
 using namespace std;
 int test();
 int getChoice();
 int menuTest();
-int main() { return menuTest(); }
+int main() { return test(); }
 
 int menuTest() {
   // Get choice and run stack methods based on it
   int choice;
-  Stack s;
+  my_utils::Stack s;
   while (choice != 7) {
     choice = getChoice();
     switch (choice) {
@@ -157,7 +83,7 @@ int getChoice() {
   return choice;
 }
 int test() {
-  Stack st1 = Stack();
+  my_utils::Stack st1 = my_utils::Stack();
   // peek
   bool peekWorks = false;
   try {

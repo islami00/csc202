@@ -63,56 +63,59 @@ bool arr_eq(int arr1[], int arr2[], int arr1_size, int arr2_size) {
   return eq;
 };
 
-// Stack::Stack() {
-//   // Initialise stack by pointing end to the last element (0 cuz it's empty)
-// }
-// Stack::~Stack() {
-//   // Delete stack
-//   // Deallocate???
-// }
-// int Stack::push(int item) {
-//   // Check if stack is full. No 4th el so the pointer
-// }
-// int Stack::pop() {
-//   // Check if stack is empty
-// }
-// namespace my_utils
-// Fix this.
-// class Stack {
-//  private:
-//   /* data */
-//   int length;
-//   int st[4];            // Stack of 4
-//   int *stEnd = &st[3];  // Pointer to end of stack
+Stack::Stack() { top = -1; }
+Stack::~Stack() {}
 
-//  public:
-//   Stack(){};
-//   ~Stack(){};
-//   int push(int item) {
-//     // Check if exceeded end
-//     if (stEnd == &st[3]) {
-//       std::cout << "Pushing more than capacity";
-//       throw "Pushing more than capacity";
-//       return -1;
-//     }
-//     // Go forward
-//     stEnd = stEnd + 1;
-//     // Append to array.
-//     *stEnd = item;
-//     return 0;
-//   }
-//   int pop() {
-//     // Check if at end
-//     if (stEnd == &st[0]) {
-//       std::cout << "Stack empty";
-//       return -1;
-//     }
-//     // Get value
-//     int item = *stEnd;
-//     // Go back.
-//     stEnd = stEnd - 1;
-//     return item;
-//   }
-// };
+//  It has methods
+//   Pop allows us to take an element off the top
+int Stack::pop() {
+  if (isEmpty()) {
+    throw std::logic_error("Trying to pop an empty stack");
+  };
+  int t = elements[top];
+  elements[top] = 0;
+  top = top - 1;
+  return t;
+}
+//   peek allows us to check the topmost element
+int Stack::peek() {
+  if (isEmpty()) {
+    throw std::logic_error("Trying to peek an empty stack");
+    // return -1;
+  };
+  return elements[top];
+}
+//   Push allows us to put an element on the stack
+int Stack::push(int element) {
+  if (isFull()) {
+    return 1;
+  }
+  top = top + 1;
+  elements[top] = element;
+  return 0;
+}
+//   Convenience methods
+//   isEmpty
+bool Stack::isEmpty() {
+  if (top == -1) return true;
+  return false;
+}
+//   isFull
+bool Stack::isFull() {
+  if ((top + 1) == STACK_SIZE) return true;
+  return false;
+}
+//   display -- show all elements on the stack
+void Stack::display() {
+  if (top == -1) {
+    std::cout << "Stack is empty" << std::endl;
+    return;
+  }
+  std::cout << "Stack: " << std::endl;
+  for (int i = 0; i <= top; i++) {
+    std::cout << "stack[" << i << "]"
+              << " = " << elements[i] << '\n';
+  }
+}
 
 }  // namespace my_utils
