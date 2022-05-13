@@ -62,7 +62,26 @@ class Stack {
   int change(int element, int position);
   void display();
 };
+#define QUEUE_SIZE 3
+/**
+ * We need a queue
+ * */
+class Queue {
+ private:
+  int front;
+  int end;
+  int elements[QUEUE_SIZE];
 
+ public:
+  Queue();
+  ~Queue();
+  int enqueue(int element);
+  int dequeue();
+  bool isFull();
+  bool isEmpty();
+  void display();
+  int count();
+};
 
 }  // namespace my_utils
 
