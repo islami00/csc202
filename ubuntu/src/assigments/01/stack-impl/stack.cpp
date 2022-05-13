@@ -1,0 +1,140 @@
+#include <iostream>
+
+#define STACK_SIZE 3
+// We need a fixed size stack
+class Stack {
+ private:
+  int top;
+  int elements[STACK_SIZE];
+
+ public:
+  Stack();
+  ~Stack();
+  int pop();
+  int peek();
+  int push(int element);
+  bool isEmpty();
+  bool isFull();
+  int change(int element, int position);
+};
+
+//  It has fixed size, as specified by caller
+
+Stack::Stack() { top = -1; }
+Stack::~Stack() {}
+
+//  It has methods
+
+//   Pop allows us to take an element off the top
+int Stack::pop() {
+  if (isEmpty()) {
+    return -1;
+  };
+  int t = elements[top];
+  elements[top] = 0;
+  top = top - 1;
+  return t;
+}
+//   peek allows us to check the topmost element
+int Stack::peek() {
+  if (isEmpty()) {
+    return -1;
+  };
+  return elements[top];
+}
+// Push allows us to put an element on the stack
+int Stack::push(int element) {
+  if (isFull()) {
+    return -1;
+  }
+  top = top + 1;
+  elements[top] = element;
+  return 0;
+}
+//   Convenience methods
+//   isEmpty
+bool Stack::isEmpty() {
+  if (top == -1) return true;
+  return false;
+}
+//   isFull
+bool Stack::isFull() {
+  if ((top + 1) == STACK_SIZE) return true;
+  return false;
+}
+//   Unnatural ---
+//   change() -- Replace el at position
+int Stack::change(int element, int position) {
+  // 1. Underflow
+  if (isEmpty()) return 1;
+
+  // 2. Underflow
+  if (position > top) return 2;
+  //   proof: top>position >= 0;
+  if (position < 0) return 3;
+
+  // Else swap at pos.
+  elements[position] = element;
+  return 0;
+}
+
+// #[test]
+// Little thingies about my stack:
+// NEVER store -1 on the stack.
+// NEVER store 0 on the stack.
+// Shift all values forward by one or two if you fear one or both to ensure your
+// domain is strictly positive. -1 is used for error in functions that return a
+// value. and 0 is the default value.
+#include <string>
+using namespace std;
+int main() {
+  Stack st1 = Stack();
+  int n = st1.peek();
+  bool peekWorks = n == -1;
+  if (!peekWorks) {
+    cout << "Peek didn't fail in empty state";
+    return 1;
+  }
+  n = st1.isEmpty();
+  bool isEmptyWorks = n != -1;
+  if (!isEmptyWorks) {
+    cout << "isEmpty fails in empty state";
+    return 2;
+  }
+  int res1 = st1.push(1);
+  int res2 = st1.push(2);
+  int res3 = st1.push(3);
+  bool pushWorks = !res1 && !res2 && !res3;  // all return 0;
+  if (!pushWorks) {
+    cout << "Push is broken";
+    cout << "Individual push returns: " << res1 << " " << res2 << " " << res3;
+    return 3;
+  }
+  if (!st1.isFull()) {
+    cout << "isFull is broken in full state";
+    return 4;
+  }
+  int one = st1.pop();
+  int two = st1.pop();
+  int three = st1.pop();
+  n = st1.pop();
+  bool popWorks = (one == 1) && (two == 2) && (three == 3) && (n == -1);
+  if (!st1.isEmpty()) {
+    cout << "pop is broken";
+    if (popWorks) cout << "But the elements are being returned as expected";
+    return 5;
+  }
+
+  st1.push(1);
+  st1.push(2);
+  n = st1.change(-1, 0);
+
+  st1.pop();
+  signed int minusOne = st1.pop();
+  bool changeWorks = (minusOne == -1) && (n == 0);
+  if (!changeWorks) {
+    cout << "Change is broken";
+  }
+
+  return 0;
+}

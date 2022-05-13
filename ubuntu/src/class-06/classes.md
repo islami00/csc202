@@ -4,6 +4,14 @@
 2. `private`: no r/w from outside, only within the class
 3. `public`: r/w from outside.
 
+## Class members
+
+Classes have two member types:
+
+* Data members
+* Member functions
+
+These are also called member instances????
 
 ## Objects and classes??
 
