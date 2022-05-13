@@ -60,9 +60,15 @@ int Queue::dequeue() {
 
 // Convenience methods
 //   isFull
-bool Queue::isFull() { return (end + 1) == QUEUE_SIZE; }
+bool Queue::isFull() {
+  if (end == (QUEUE_SIZE - 1)) return true;
+  return false;
+}
 //   isEmpty
-bool Queue::isEmpty() { return front == -1; }
+bool Queue::isEmpty() {
+  if (front == -1) return true;
+  return false;
+}
 //   display
 void Queue::display() {
   if (isEmpty()) {
@@ -85,7 +91,81 @@ int Queue::count() {
   return end - front + 1;
 }
 int test();
-int main() { return test(); }
+int menuTest();
+int get_input();
+int main() { return menuTest(); }
+// #[test]
+int menuTest() {
+  Queue q;
+  int choice;
+  do {
+    choice = get_input();
+    switch (choice) {
+      case 1: {
+        std::cout << "Enter an element to enqueue: ";
+        int element;
+        std::cin >> element;
+        int res = q.enqueue(element);
+        if (res == 1) {
+          std::cout << "Error: Queue is full" << std::endl;
+        }
+        q.display();
+        break;
+      }
+      case 2:
+        try {
+          int dequeued = q.dequeue();
+          std::cout << "Dequeued: " << dequeued << "\n";
+        } catch (std::logic_error e) {
+          std::cout << "Error: " << e.what() << "\n";
+        }
+        q.display();
+        break;
+      case 3:
+        q.display();
+        break;
+      case 4:
+        std::cout << "Count: " << q.count() << "\n";
+        break;
+      case 5:
+        std::cout << "Queue is ";
+        if (q.isFull()) {
+          std::cout << "full\n";
+        } else {
+          std::cout << "not full\n";
+        }
+        break;
+      case 6:
+        std::cout << "Queue is ";
+        if (q.isEmpty()) {
+          std::cout << "empty\n";
+        } else {
+          std::cout << "not empty\n";
+        }
+        break;
+      case 7:
+        std::cout << "Quitting ... \n";
+        break;
+      default:
+        std::cout << "Error: Invalid choice\n";
+    }
+  } while (choice != 7);
+  return 0;
+}
+int get_input() {
+  // switch-case input corresponding to each method
+  int input;
+  std::cout << "1. Enqueue\n";
+  std::cout << "2. Dequeue\n";
+  std::cout << "3. Display\n";
+  std::cout << "4. Count\n";
+  std::cout << "5. isFull\n";
+  std::cout << "6. isEmpty\n";
+  std::cout << "7. Quit\n";
+  std::cout << "Enter your choice: ";
+  std::cin >> input;
+  return input;
+}
 int test() {
   // We should be able to start an empty queue.
   Queue q;
