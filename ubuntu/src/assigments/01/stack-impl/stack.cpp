@@ -84,7 +84,9 @@ int Stack::change(int element, int position) {
 // domain is strictly positive, because 0 is the default value.
 #include <string>
 using namespace std;
-int main() {
+int test();
+int main() { return test(); }
+int test() {
   Stack st1 = Stack();
   // peek
   bool peekWorks = false;
