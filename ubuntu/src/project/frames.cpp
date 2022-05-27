@@ -376,49 +376,72 @@ int DoublyLinkedListTests() {
   DoublyLinkedList* dll = new DoublyLinkedList();
   dll->display();
   // Assert_isEmpty!
-  assert(dll->isEmpty() == true);
+  bool isEmpty = dll->isEmpty();
+  assert(isEmpty == true);
   dll->insert(1, 0);
   dll->display();
   // Assert_isEmpty!
-  assert(dll->isEmpty() == false);
+  isEmpty = dll->isEmpty();
+  assert(isEmpty == false);
   // Assert_size!
-  assert(dll->size() == 1);
+  int size = dll->size();
+  assert(size == 1);
   dll->insert(2, 0);
   dll->display();
   // Assert_size!
-  assert(dll->size() == 2);
+  size = dll->size();
+  assert(size == 2);
   dll->insert(3, 0);
   dll->display();
   dll->insert(4, 0);
   dll->display();
   // Assert_contains and findIndex and find
-  assert(dll->contains(4) == true);
-  assert(dll->findIndex(4) == 0);
-  assert(dll->find(1)->getData() == 3);
+  bool contains = dll->contains(4);
+  assert(contains == true);
+  int indexFound = dll->findIndex(4);
+  assert(indexFound == 0);
+  DNode* nodeAtIndex = dll->find(1);
+  int nodeData = nodeAtIndex->getData();
+  assert(nodeData == 3);
   // Assert_deleteAtIndex
   dll->deleteAtIndex(0);
   dll->display();
-  assert(dll->size() == 3);
-  assert(dll->findIndex(4) == -1);
-  assert(dll->contains(4) == false);
-  assert(dll->find(-1) == nullptr);
-  assert(dll->getTail()->getData() == 1);
+  size = dll->size();
+  assert(size == 3);
+  indexFound = dll->findIndex(4);
+  assert(indexFound == -1);
+  contains = dll->contains(4);
+  assert(contains == false);
+  nodeAtIndex = dll->find(-1);
+  assert(nodeAtIndex == nullptr);
+  DNode* tailNode = dll->getTail();
+  nodeData = tailNode->getData();
+  assert(nodeData == 1);
   // inserting at > 0 indices
   dll->insert(10, 1);
   dll->display();
-  assert(dll->size() == 4);
-  assert(dll->findIndex(10) == 1);
+  size = dll->size();
+  assert(size == 4);
+  indexFound = dll->findIndex(10);
+  assert(indexFound == 1);
   dll->insert(11, 1);
   dll->insert(12, 2);
   dll->insert(13, 3);
-  assert(dll->size() == 7);
-  assert(dll->findIndex(11) == 1);
-  assert(dll->findIndex(12) == 2);
-  assert(dll->findIndex(13) == 3);
-  assert(dll->findIndex(10) == 4);
+  size = dll->size();
+
+  assert(size == 7);
+  indexFound = dll->findIndex(11);
+  assert(indexFound == 1);
+  indexFound = dll->findIndex(12);
+  assert(indexFound == 2);
+  indexFound = dll->findIndex(13);
+  assert(indexFound == 3);
+  indexFound = dll->findIndex(10);
+  assert(indexFound == 4);
   dll->display();
   // Inserting at out of bounds indices is idempotent
   dll->insert(199, 12);
-  assert(dll->size() == 7);
+  size = dll->size();
+  assert(size == 7);
   return 0;
 }
