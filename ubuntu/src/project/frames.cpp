@@ -7,8 +7,6 @@ class Node {
   int data;
   // A reference to the next node
   Node* next;
-  // This won't be used except for doubly linked list.
-  Node* prev;
 
  public:
   //  Creates a node with the specified data
@@ -23,14 +21,10 @@ class Node {
   int getData();
   // get next
   Node* getNext();
-  // get prev
-  Node* getPrev();
   // set data
   void setData(int data);
   // Set a reference to the next node
   void setNext(Node* nextNode);
-  // Set a reference to the previous node.
-  void setPrev(Node* prevNode);
   // Display the data stored in the node
   void display();
 };
@@ -38,31 +32,57 @@ class Node {
 Node::Node(int data) {
   this->data = data;
   this->next = nullptr;
-  this->prev = nullptr;
 }
 
-Node::~Node() {
-  // This is only valid for doubly linked list. Circular and linear will need to
-  // manually manage next refs on delete
-  if (this->prev != nullptr) {
-    // If something is before us, Fix its next pointer to avoid dangling ref
-    Node* nextNode = this->next;
-    this->prev->next = nextNode;
-  }
-  // If something comes after us, Fix its prev pointer
-  if (this->next != nullptr) {
-    Node* prevNode = this->prev;
-    this->next->prev = prevNode;
-  }
-}
+Node::~Node() {}
 int Node::getData() { return this->data; }
 Node* Node::getNext() { return this->next; }
-Node* Node::getPrev() { return this->prev; }
 void Node::setData(int data) { this->data = data; }
 void Node::setNext(Node* nextNode) { this->next = nextNode; }
-void Node::setPrev(Node* prevNode) { this->prev = prevNode; }
 void Node::display() {
-  cout << "[" << this->prev << "|" << this->data << "|" << this->next << "]";
+  std::cout << "[" << this->data << "|" << this->next << "]";
+}
+/**DNode specialisation for doubly linked list*/
+class DNode : public Node {
+ private:
+  // A reference to the previous node
+  DNode* prev;
+
+ public:
+  //  Creates a node with the specified data
+  DNode(int data);
+  // Special destructor for DNode
+  ~DNode();
+  // Override getNext
+  DNode* getNext();
+
+  // get prev
+  DNode* getPrev();
+  // set prev
+  void setPrev(DNode* prevNode);
+  // Display the data stored in the node
+  void display();
+};
+DNode::DNode(int data) : Node(data) { this->prev = nullptr; }
+DNode::~DNode() {
+  if (this->prev != nullptr) {
+    // If something is before us, Fix its next pointer to avoid dangling ref
+    DNode* nextNode = this->getNext();
+    this->prev->setNext(nextNode);
+  }
+  // If something comes after us, Fix its prev pointer
+  if (this->getNext() != nullptr) {
+    DNode* prevNode = this->prev;
+    DNode* nextNode = this->getNext();
+    nextNode->setPrev(prevNode);
+  }
+}
+DNode* DNode::getNext() { return (DNode*)Node::getNext(); }
+DNode* DNode::getPrev() { return this->prev; }
+void DNode::setPrev(DNode* prevNode) { this->prev = prevNode; }
+void DNode::display() {
+  std::cout << "[" << this->prev << "|" << this->getData() << "|"
+            << this->getNext() << "]";
 }
 /** List classes implemenetations
  * Singly linked list:  Tobechi
@@ -119,9 +139,9 @@ Node* SinglyLinkedList::getHead() { return this->head; }
 /*** Doubly linked list */
 class DoublyLinkedList {
  private:
-  Node* head;
+  DNode* head;
   // Initialised to head
-  Node* tail;
+  DNode* tail;
 
  public:
   /**CORE METHODS*/
@@ -142,15 +162,15 @@ class DoublyLinkedList {
 
   /**CONVENIENCE*/
   /**   Return the head node*/
-  Node* getHead();
+  DNode* getHead();
   /** Return the tail node */
-  Node* getTail();
+  DNode* getTail();
   /**   check if the list is empty*/
   bool isEmpty();
   /**EXTRAS*/
   /**   Find a node at a particular index in the list, return nullptr if not
    * found*/
-  Node* find(int index);
+  DNode* find(int index);
   /**   Find the index of the first node matching a particular piece of data,
    * return -1 if not found*/
   int findIndex(int data);
@@ -164,34 +184,44 @@ DoublyLinkedList::DoublyLinkedList() {
 }
 
 DoublyLinkedList::~DoublyLinkedList() {
-  Node* current = this->head;
+  DNode* current = this->head;
   while (current != nullptr) {
-    Node* nextNode = current->getNext();
+    DNode* nextNode = current->getNext();
     delete current;
     current = nextNode;
   }
 }
 
 void DoublyLinkedList::insert(int data, int index) {
-  Node* newNode = new Node(data);
-  // Underflow
-  if (isEmpty()) {
-    // Init: head=tail=newNode
-    this->head = newNode;
-    this->tail = newNode;
+  int size = this->size();
+  // Overflow, underflow
+  if (index < 0) {
+    std::cout << "Underflow, Index out of range, cannot insert" << std::endl;
+    return;
   }
+  if (index > size) {
+    std::cout << "Overflow, Index out of range, cannot insert" << std::endl;
+    return;
+  }
+  DNode* newNode = new DNode(data);
   // Size is definitely >= 1
   // If it's at the head
-  else if (index == 0) {
+  if (index == 0) {
+    // Empty case
+    if (isEmpty()) {
+      this->head = newNode;
+      this->tail = this->head;
+      return;
+    }
     // Push head down and place newNode at the head
     // new node's prev is null, the default
     newNode->setNext(this->head);
     this->head->setPrev(newNode);
     this->head = newNode;
   }
-  // Size is definitely >= 1 and index is definitely >= 1
   // If it's at the tail
-  else if (index == this->size() - 1) {
+  // Size is definitely >= 1 and index is definitely >= 1
+  else if (index == (size - 1)) {
     // Push tail up and place newNode at the tail
     newNode->setPrev(this->tail);
     // new node's Next is null, the default.
@@ -202,12 +232,12 @@ void DoublyLinkedList::insert(int data, int index) {
   // i.e Index is definitely in range [1, size - 2]
   else {
     // Traverse the list till we get to the node before the insertion point
-    Node* current = this->head;
+    DNode* current = this->head;
     for (int i = 1; i < index; i++) {
       current = current->getNext();
     }
     // Insert the new node, full process
-    Node* nodeAtIndex = current->getNext();
+    DNode* nodeAtIndex = current->getNext();
     newNode->setPrev(current);
     newNode->setNext(nodeAtIndex);
     // Fix refs
@@ -220,7 +250,7 @@ void DoublyLinkedList::deleteAtIndex(int index) {
   // Underflow
   if (isEmpty()) {
     // Err out in prod, but print here.
-    cout << endl << "Underflow, cannot delete" << endl;
+    std::cout << std::endl << "Underflow, cannot delete" << std::endl;
     return;
   } else if (size == 1) {
     // special case, head == tail, hence delete head and reset list to init
@@ -232,7 +262,7 @@ void DoublyLinkedList::deleteAtIndex(int index) {
   // if it's at the head
   else if (index == 0) {
     // Pop head
-    Node* nextNode = this->head->getNext();
+    DNode* nextNode = this->head->getNext();
     // Ref fixing happens implicitly in destructor, we only have to check
     // tracked refs
     delete this->head;
@@ -242,14 +272,14 @@ void DoublyLinkedList::deleteAtIndex(int index) {
   // if it's at the tail
   else if (index == this->size() - 1) {
     // Pop tail and place it's prev ref as new tail
-    Node* prevNode = this->tail->getPrev();
+    DNode* prevNode = this->tail->getPrev();
     delete this->tail;
     this->tail = prevNode;
   }
   // In between
   else {
     // Traverse the list till we get to the node before the delete point
-    Node* current = this->head;
+    DNode* current = this->head;
     for (int i = 1; i < index; i++) {
       current = current->getNext();
     }
@@ -258,27 +288,28 @@ void DoublyLinkedList::deleteAtIndex(int index) {
   }
 };
 void DoublyLinkedList::display() {
+  std::cout << std::endl;
   // Underflow
   if (isEmpty()) {
-    cout << endl << "List is empty" << endl;
+    std::cout << std::endl << "List is empty" << std::endl;
     return;
   }
   // If only one node
   if (this->size() == 1) {
     this->head->display();
-    cout << endl;
+    std::cout << std::endl;
     return;
   }
   // Traverse list and print all
-  Node* current = this->head;
+  DNode* current = this->head;
   while (current != nullptr) {
     current->display();
     if (current != this->tail) {
-      cout << "->";
+      std::cout << "<->";
     }
     current = current->getNext();
   }
-  cout << endl;
+  std::cout << std::endl;
 };
 int DoublyLinkedList::size() {
   int size = 0;
@@ -290,15 +321,26 @@ int DoublyLinkedList::size() {
   return size;
 };
 
-Node* DoublyLinkedList::getHead() { return this->head; };
-Node* DoublyLinkedList::getTail() { return this->tail; };
+DNode* DoublyLinkedList::getHead() { return this->head; };
+DNode* DoublyLinkedList::getTail() { return this->tail; };
 bool DoublyLinkedList::isEmpty() { return this->head == nullptr; };
-Node* DoublyLinkedList::find(int index) {
-  Node* current = this->head;
+DNode* DoublyLinkedList::find(int index) {
+  if (index < 0 || index >= this->size()) {
+    // Err out
+    std::cout << "Overflow/Underflow in find at DoublyLinkedList, index out of "
+                 "bounds";
+    return nullptr;  // nf
+  }
+  DNode* found = nullptr;
+  DNode* current = this->head;
   for (int i = 0; (i < index) && current != nullptr; i++) {
     current = current->getNext();
+    if (i == index - 1) {
+      found = current;
+      break;
+    }
   }
-  return current;
+  return found;
 };
 int DoublyLinkedList::findIndex(int data) {
   int index = 0;
@@ -322,7 +364,61 @@ void circularLinkedListInnerMenu();
 // Outer menu --fayyad
 void outerMenu();
 // Main
+#include <assert.h>
+int DoublyLinkedListTests();
 int main() {
-  outerMenu();
+  DoublyLinkedListTests();
+  return 0;
+}
+
+// Run these to test doubly linked list
+int DoublyLinkedListTests() {
+  DoublyLinkedList* dll = new DoublyLinkedList();
+  dll->display();
+  // Assert_isEmpty!
+  assert(dll->isEmpty() == true);
+  dll->insert(1, 0);
+  dll->display();
+  // Assert_isEmpty!
+  assert(dll->isEmpty() == false);
+  // Assert_size!
+  assert(dll->size() == 1);
+  dll->insert(2, 0);
+  dll->display();
+  // Assert_size!
+  assert(dll->size() == 2);
+  dll->insert(3, 0);
+  dll->display();
+  dll->insert(4, 0);
+  dll->display();
+  // Assert_contains and findIndex and find
+  assert(dll->contains(4) == true);
+  assert(dll->findIndex(4) == 0);
+  assert(dll->find(1)->getData() == 3);
+  // Assert_deleteAtIndex
+  dll->deleteAtIndex(0);
+  dll->display();
+  assert(dll->size() == 3);
+  assert(dll->findIndex(4) == -1);
+  assert(dll->contains(4) == false);
+  assert(dll->find(-1) == nullptr);
+  assert(dll->getTail()->getData() == 1);
+  // inserting at > 0 indices
+  dll->insert(10, 1);
+  dll->display();
+  assert(dll->size() == 4);
+  assert(dll->findIndex(10) == 1);
+  dll->insert(11, 1);
+  dll->insert(12, 2);
+  dll->insert(13, 3);
+  assert(dll->size() == 7);
+  assert(dll->findIndex(11) == 1);
+  assert(dll->findIndex(12) == 2);
+  assert(dll->findIndex(13) == 3);
+  assert(dll->findIndex(10) == 4);
+  dll->display();
+  // Inserting at out of bounds indices is idempotent
+  dll->insert(199, 12);
+  assert(dll->size() == 7);
   return 0;
 }
