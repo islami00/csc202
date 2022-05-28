@@ -1,5 +1,6 @@
 #include <iostream>
 using namespace std;
+
 /** Node:  All class implementations will use this  */
 class Node {
  private:
@@ -11,11 +12,6 @@ class Node {
  public:
   //  Creates a node with the specified data
   Node(int data);
-  /**
-   * Merges prev and next if prev exists, and/or next and prev if next exists,
-   * (only in case of doubly linked list), else it's upto the implementer to
-   * ensure all memory is accounted for, because it relies on prev which isn't
-   * implemented for singular/circular linked lists*/
   ~Node();
   // get data
   int getData();
@@ -33,7 +29,6 @@ Node::Node(int data) {
   this->data = data;
   this->next = nullptr;
 }
-
 Node::~Node() {}
 int Node::getData() { return this->data; }
 Node* Node::getNext() { return this->next; }
@@ -42,6 +37,7 @@ void Node::setNext(Node* nextNode) { this->next = nextNode; }
 void Node::display() {
   std::cout << "[" << this->data << "|" << this->next << "]";
 }
+
 /**DNode specialisation for doubly linked list*/
 class DNode : public Node {
  private:
@@ -51,7 +47,11 @@ class DNode : public Node {
  public:
   //  Creates a node with the specified data
   DNode(int data);
-  // Special destructor for DNode
+  /**
+   * Merges prev and next if prev exists, and/or next and prev if next exists,
+   * (only in case of doubly linked list), else it's upto the implementer to
+   * ensure all memory is accounted for, because it relies on prev which isn't
+   * implemented for singular/circular linked lists*/
   ~DNode();
   // Override getNext
   DNode* getNext();
@@ -358,9 +358,80 @@ int DoublyLinkedList::findIndex(int data) {
 bool DoublyLinkedList::contains(int data) { return findIndex(data) != -1; };
 
 /** Inner menus -- zaid */
-void singlyLinkedListInnerMenu();
+void singlyLinkedListInnerMenu() {
+  int val = 0;
+  while (val != 7) {
+    cout << "Choose an option" << endl
+         << "Press 1 for Insert" << endl
+         << "Press 2 for Delete" << endl
+         << "Press 3 for Display" << endl
+         << "Press 4 for Size" << endl
+         << "Press 5 for find" << endl
+         << "Press 6 for findindex" << endl;
+    cin >> val;
+    // Create the list
+    SinglyLinkedList* list = new SinglyLinkedList();
+    switch (val) {
+      case 1: {
+        int data, index;
+        Node* head = list->getHead();
+        Node** headref = &head;
+        cout << "Enter data" << endl;
+        cin >> data;
+
+        cout << "Enter index" << endl;
+        cin >> index;
+
+        list->insert(data, index);
+        list->display();
+        break;
+      }
+      case 2: {
+        int index;
+        cout << "Enter index" << endl;
+        cin >> index;
+
+        list->deleteAtIndex(index);
+        list->display();
+        break;
+      }
+      case 3:
+        list->display();
+        break;
+
+      case 4:
+        cout << "Size is " << list->size() << endl;
+        break;
+      case 5: {
+        int index;
+        cout << "Enter index to find" << endl;
+        cin >> index;
+        Node* found = list->find(index);
+        if (found != nullptr) {
+          cout << "Found " << endl;
+          found->display();
+        } else {
+          cout << "Not found" << endl;
+        }
+        break;
+      }
+      case 6: {
+        int data;
+        cout << "Enter data to find" << endl;
+        cin >> data;
+        int index = list->findIndex(data);
+        if (index != -1) {
+          cout << "Found at index " << index << endl;
+        } else {
+          cout << "Not found" << endl;
+        }
+        break;
+      }
+    }
+  }
+};
 void doublyLinkedListInnerMenu();
-void circularLinkedListInnerMenu();
+void circularLinkedListInnerMenu(){};
 // Outer menu --fayyad
 void outerMenu();
 // Main
