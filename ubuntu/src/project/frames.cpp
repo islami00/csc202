@@ -126,17 +126,193 @@ class SinglyLinkedList {
   Node* find(int index);
   /**   Find the index of a node with a particular piece of data*/
   int findIndex(int data);
+  // bool wrapper over findIndex
+  bool contains(int data);
+};
+/*convienience*/
+SinglyLinkedList::SinglyLinkedList() {
+  this->head = nullptr;
+  this->tail = nullptr;
+}
+SinglyLinkedList::~SinglyLinkedList() {
+  Node* head = this->head;
+  while (head != nullptr) {
+    Node* nextNode = head->getNext();
+    delete head;
+    head = nextNode;
+  }
+}
+void SinglyLinkedList::insert(int data, int index) {
+  Node* newNode = new Node(data);
+  if (index < 0 || index > size()) {
+    cout << "Invalid index" << endl;
+    return;
+  }
+  if (index == 0) {
+    newNode->setNext(head);
+    head = newNode;
+    if (isEmpty()) {
+      tail = head;
+    }
+  } else if (index == size()) {
+    if (size() == 1) {
+      head->setNext(newNode);
+      tail = newNode;
+    }
+    // index will be more than one, and size will also be more than one.
+    tail->setNext(newNode);
+    tail = newNode;
+  } else {
+    // Index >= 1, and index!=size. and size!=1. so index is in [1, size-1]
+    Node* temp = head;
+    for (int i = 1; i < index; i++) {  // Stop before the index
+      if (temp != nullptr) {
+        temp = temp->getNext();
+      }
+    }
+    if (temp != nullptr) {
+      newNode->setNext(temp->getNext());
+      temp->setNext(newNode);
+    }
+  }
 };
 
-// Implement each method like this.
-// E.g: Constructor
-SinglyLinkedList::SinglyLinkedList() {}
-// E.g: Destructor
-SinglyLinkedList::~SinglyLinkedList() {}
-// E.g: Methods
-Node* SinglyLinkedList::getHead() { return this->head; }
+void SinglyLinkedList::deleteAtIndex(int index) {
+  if (isEmpty()) {
+    std::cout << "List is empty" << std::endl;
+    return;
+  }
+  Node* temp = head;
+  if (index == 0) {
+    head = temp->getNext();
+    delete (temp); /*free*/
+    return;
+  };
+  // Traverse to the node one place before
+  for (int i = 0; temp != nullptr && i < index; i++) temp = temp->getNext();
+  // Deal with null temp, or next not being a node.
+  if (temp == nullptr || temp->getNext() == nullptr) return;
+  // here ->  where we want to delete  ->  the node after
+  Node* next = temp->getNext()->getNext();
+  delete (temp->getNext());
+  temp->setNext(next);
+};
 
-/*** Doubly linked list */
+void SinglyLinkedList::display() {
+  std::cout << std::endl;
+  // Underflow
+  if (isEmpty()) {
+    std::cout << "List is empty" << std::endl;
+    return;
+  }
+  // If only one node
+  if (this->size() == 1) {
+    std::cout << "Head: ";
+    this->head->display();
+    std::cout << std::endl;
+    return;
+  }
+  // Traverse list and print all
+  Node* ptr = this->head;
+  while (ptr != nullptr) {
+    if (ptr == this->head) {
+      std::cout << "Head: ";
+    }
+    if (ptr == this->tail) {
+      std::cout << " Tail: ";
+    }
+    ptr->display();
+    if (ptr != this->tail) {
+      std::cout << "<->";
+    }
+    std::cout << std::endl;
+    ptr = ptr->getNext();
+  }
+};
+
+int SinglyLinkedList::size() {
+  Node* temp = head;
+  int i = 0;
+  while (temp != nullptr) {
+    i++;
+    temp = temp->getNext();
+  };
+  return i;
+};
+
+bool SinglyLinkedList::isEmpty() {
+  if (head == nullptr) return true;
+  return false;
+}
+
+Node* SinglyLinkedList::find(int index) {
+  if (index < 0 || index > size()) {
+    std::cout << "Invalid index" << std::endl;
+    return nullptr;
+  }
+  Node* temp = head;
+  Node* found = nullptr;
+  for (int i = 0; i <= index && temp != nullptr; i++) {
+    if (i == index) {
+      found = temp;
+    }
+    temp = temp->getNext();
+  }
+  return found;
+}
+int SinglyLinkedList::findIndex(int data) {
+  Node* temp = head;
+  int found = -1;
+  for (int i = 0; i < size() && temp != nullptr; i++) {
+    if (temp->getData() == data) {
+      found = i;
+    }
+    temp = temp->getNext();
+  }
+  return found;
+}
+
+bool SinglyLinkedList::contains(int data) { return findIndex(data) != -1; }
+Node* SinglyLinkedList::getHead() { return this->head; }
+Node* SinglyLinkedList::getTail() { return tail; }
+
+/** Circular linked list */
+class CircularLinkedList : public SinglyLinkedList {
+ public:
+  /**CORE METHODS*/
+  /**
+   * Initialise the private variables, Head, tail Head = null, tail = null */
+  CircularLinkedList();
+  /** Destroy the linked list (follow the next nodes from head till you reach
+   * tail, deleting as you go) */
+  ~CircularLinkedList();
+  /** Insert a node with the specified data at an index in the list
+   * First node will mutate head, others will mutate tail */
+  void insert(int data, int index);
+  /** Delete a node at an index in the list, cleaning up the memory */
+  void deleteAtIndex(int index);
+  /**   Call display on all children, sequentially */
+  void display();
+  /**   Count the nodes in the list*/
+  int size();
+
+  /**CONVENIENCE*/
+  /**   Return the head node*/
+  Node* getHead();
+  /** Return the tail node */
+  Node* getTail();
+  /**   check if the list is empty*/
+  bool isEmpty();
+  /**EXTRAS*/
+  /**   Find a node at a particular index in the list*/
+  Node* find(int index);
+  /**   Find the index of a node with a particular piece of data*/
+  int findIndex(int data);
+  // bool wrapper over findIndex
+  bool contains(int data);
+};
+
+/** Doubly linked list */
 class DoublyLinkedList {
  private:
   DNode* head;
@@ -221,7 +397,12 @@ void DoublyLinkedList::insert(int data, int index) {
   }
   // If it's at the tail
   // Size is definitely >= 1 and index is definitely >= 1
-  else if (index == (size - 1)) {
+  else if (index == size) {
+    if (isEmpty()) {
+      this->head->setNext(newNode);
+      this->tail = this->head;
+      return;
+    }
     // Push tail up and place newNode at the tail
     newNode->setPrev(this->tail);
     // new node's Next is null, the default.
@@ -291,7 +472,7 @@ void DoublyLinkedList::display() {
   std::cout << std::endl;
   // Underflow
   if (isEmpty()) {
-    std::cout << std::endl << "List is empty" << std::endl;
+    std::cout << "List is empty" << std::endl;
     return;
   }
   // If only one node
@@ -303,13 +484,19 @@ void DoublyLinkedList::display() {
   // Traverse list and print all
   DNode* current = this->head;
   while (current != nullptr) {
+    if (current == this->head) {
+      std::cout << "Head: ";
+    }
+    if (current == this->tail) {
+      std::cout << " Tail: ";
+    }
     current->display();
     if (current != this->tail) {
       std::cout << "<->";
     }
+    std::cout << std::endl;
     current = current->getNext();
   }
-  std::cout << std::endl;
 };
 int DoublyLinkedList::size() {
   int size = 0;
@@ -358,80 +545,9 @@ int DoublyLinkedList::findIndex(int data) {
 bool DoublyLinkedList::contains(int data) { return findIndex(data) != -1; };
 
 /** Inner menus -- zaid */
-void singlyLinkedListInnerMenu() {
-  int val = 0;
-  while (val != 7) {
-    cout << "Choose an option" << endl
-         << "Press 1 for Insert" << endl
-         << "Press 2 for Delete" << endl
-         << "Press 3 for Display" << endl
-         << "Press 4 for Size" << endl
-         << "Press 5 for find" << endl
-         << "Press 6 for findindex" << endl;
-    cin >> val;
-    // Create the list
-    SinglyLinkedList* list = new SinglyLinkedList();
-    switch (val) {
-      case 1: {
-        int data, index;
-        Node* head = list->getHead();
-        Node** headref = &head;
-        cout << "Enter data" << endl;
-        cin >> data;
-
-        cout << "Enter index" << endl;
-        cin >> index;
-
-        list->insert(data, index);
-        list->display();
-        break;
-      }
-      case 2: {
-        int index;
-        cout << "Enter index" << endl;
-        cin >> index;
-
-        list->deleteAtIndex(index);
-        list->display();
-        break;
-      }
-      case 3:
-        list->display();
-        break;
-
-      case 4:
-        cout << "Size is " << list->size() << endl;
-        break;
-      case 5: {
-        int index;
-        cout << "Enter index to find" << endl;
-        cin >> index;
-        Node* found = list->find(index);
-        if (found != nullptr) {
-          cout << "Found " << endl;
-          found->display();
-        } else {
-          cout << "Not found" << endl;
-        }
-        break;
-      }
-      case 6: {
-        int data;
-        cout << "Enter data to find" << endl;
-        cin >> data;
-        int index = list->findIndex(data);
-        if (index != -1) {
-          cout << "Found at index " << index << endl;
-        } else {
-          cout << "Not found" << endl;
-        }
-        break;
-      }
-    }
-  }
-};
+void singlyLinkedListInnerMenu();
+void circularLinkedListInnerMenu();
 void doublyLinkedListInnerMenu();
-void circularLinkedListInnerMenu(){};
 // Outer menu --fayyad
 void outerMenu();
 // Main
@@ -441,8 +557,6 @@ int main() {
   DoublyLinkedListTests();
   return 0;
 }
-
-// Run these to test doubly linked list
 int DoublyLinkedListTests() {
   DoublyLinkedList* dll = new DoublyLinkedList();
   dll->display();
@@ -514,5 +628,243 @@ int DoublyLinkedListTests() {
   dll->insert(199, 12);
   size = dll->size();
   assert(size == 7);
+  // assert_insert at tail
+  dll->insert(14, 7);
+  Node* tail = dll->getTail();
+  int tailData = tail->getData();
+  assert(tailData == 14);
+  dll->display();
   return 0;
 }
+
+void singlyLinkedListInnerMenu() {
+  int val = 0;
+  while (val != 7) {
+    cout << "Choose an option" << std::endl
+         << "Press 1 for Insert" << std::endl
+         << "Press 2 for Delete" << std::endl
+         << "Press 3 for Display" << std::endl
+         << "Press 4 for Size" << std::endl
+         << "Press 5 for find" << std::endl
+         << "Press 6 for findindex" << std::endl;
+    std::cin >> val;
+    // Create the list
+    SinglyLinkedList* list = new SinglyLinkedList();
+    switch (val) {
+      case 1: {
+        int data, index;
+        Node* head = list->getHead();
+        Node** headref = &head;
+        cout << "Enter data" << std::endl;
+        std::cin >> data;
+
+        cout << "Enter index" << std::endl;
+        std::cin >> index;
+
+        list->insert(data, index);
+        list->display();
+        break;
+      }
+      case 2: {
+        int index;
+        cout << "Enter index" << std::endl;
+        std::cin >> index;
+
+        list->deleteAtIndex(index);
+        list->display();
+        break;
+      }
+      case 3:
+        list->display();
+        break;
+
+      case 4:
+        cout << "Size is " << list->size() << std::endl;
+        break;
+      case 5: {
+        int index;
+        cout << "Enter index to find" << std::endl;
+        std::cin >> index;
+        Node* found = list->find(index);
+        if (found != nullptr) {
+          cout << "Found " << std::endl;
+          found->display();
+        } else {
+          cout << "Not found" << std::endl;
+        }
+        break;
+      }
+      case 6: {
+        int data;
+        cout << "Enter data to find" << std::endl;
+        std::cin >> data;
+        int index = list->findIndex(data);
+        if (index != -1) {
+          cout << "Found at index " << index << std::endl;
+        } else {
+          cout << "Not found" << std::endl;
+        }
+        break;
+      }
+    }
+  }
+};
+void circularLinkedListInnerMenu() {
+  /**  int val = 0;
+    while (val != 7) {
+      cout << "Choose an option" << endl
+           << "Press 1 for Insert" << endl
+           << "Press 2 for Delete" << endl
+           << "Press 3 for Display" << endl
+           << "Press 4 for Size" << endl
+           << "Press 5 for find" << endl
+           << "Press 6 for findindex" << endl;
+      cin >> val;
+      // Create the list
+      CircularLinkedList* list = new CircularLinkedList();
+      switch (val) {
+        case 1: {
+          int data, index;
+          Node* head = list->getHead();
+          cout << "Enter data" << endl;
+          cin >> data;
+          cout << "Enter index" << endl;
+          cin >> index;
+          list->insert(data, index);
+          list->display();
+          break;
+        }
+        case 2: {
+          int index;
+          cout << "Enter index" << endl;
+          cin >> index;
+          list->deleteAtIndex(index);
+          list->display();
+          break;
+        }
+        case 3:
+          list->display();
+          break;
+        case 4:
+          cout << "Size is " << list->size() << endl;
+          break;
+        case 5: {
+          int index;
+          cout << "Enter index to find" << endl;
+          cin >> index;
+          Node* found = list->find(index);
+          if (found != nullptr) {
+            cout << "Found " << endl;
+            found->display();
+          } else {
+            cout << "Not found" << endl;
+          }
+          break;
+        }
+        case 6: {
+          int data;
+          cout << "Enter data to find" << endl;
+          cin >> data;
+          int index = list->findIndex(data);
+          if (index != -1) {
+            cout << "Found at index " << index << endl;
+          } else {
+            cout << "Not found" << endl;
+          }
+          break;
+        }
+      }
+    }*/
+}
+void doublyLinkedListInnerMenu() {
+  int val = 0;
+  while (val != 7) {
+    cout << "Choose an option" << endl
+         << "Press 1 for Insert" << endl
+         << "Press 2 for Delete" << endl
+         << "Press 3 for Display" << endl
+         << "Press 4 for Size" << endl
+         << "Press 5 for find" << endl
+         << "Press 6 for findindex" << endl;
+    cin >> val;
+    // Create the list
+    DoublyLinkedList* list = new DoublyLinkedList();
+    switch (val) {
+      case 1: {
+        int data, index;
+        DNode* head = list->getHead();
+        cout << "Enter data" << endl;
+        cin >> data;
+        cout << "Enter index" << endl;
+        cin >> index;
+        list->insert(data, index);
+        list->display();
+        break;
+      }
+      case 2: {
+        int index;
+        cout << "Enter index" << endl;
+        cin >> index;
+        list->deleteAtIndex(index);
+        list->display();
+        break;
+      }
+      case 3:
+        list->display();
+        break;
+      case 4:
+        cout << "Size is " << list->size() << endl;
+        break;
+      case 5: {
+        int index;
+        cout << "Enter index to find" << endl;
+        cin >> index;
+        DNode* found = list->find(index);
+        if (found != nullptr) {
+          cout << "Found " << endl;
+          found->display();
+        } else {
+          cout << "Not found" << endl;
+        }
+        break;
+      }
+      case 6: {
+        int data;
+        cout << "Enter data to find" << endl;
+        cin >> data;
+        int index = list->findIndex(data);
+        if (index != -1) {
+          cout << "Found at index " << index << endl;
+        } else {
+          cout << "Not found" << endl;
+        }
+        break;
+      }
+    }
+  }
+}
+void outerMenu() {
+  int val = 0;
+  while (val != 4) {
+    cout << "Choose an option" << endl
+         << "Press 1 for singly linked list" << endl
+         << "Press 2 for Doubly linked list" << endl
+         << "Press 3 for Display" << endl
+         << "Press 4 for Exit" << endl;
+    cin >> val;
+    switch (val) {
+      case 1:
+        singlyLinkedListInnerMenu();
+        break;
+      case 2:
+        doublyLinkedListInnerMenu();
+        break;
+      case 3:
+        circularLinkedListInnerMenu();
+        break;
+      case 4:
+        break;
+    }
+  }
+}
+// Run these to test doubly linked list
