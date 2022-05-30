@@ -145,15 +145,15 @@ SinglyLinkedList::~SinglyLinkedList() {
 void SinglyLinkedList::insert(int data, int index) {
   Node* newNode = new Node(data);
   if (index < 0 || index > size()) {
-    cout << "Invalid index" << endl;
+    cout << "Invalid index at insert" << endl;
     return;
   }
   if (index == 0) {
     newNode->setNext(head);
-    head = newNode;
     if (isEmpty()) {
-      tail = head;
+      tail = newNode;
     }
+    head = newNode;
   } else if (index == size()) {
     if (size() == 1) {
       head->setNext(newNode);
@@ -205,13 +205,6 @@ void SinglyLinkedList::display() {
     std::cout << "List is empty" << std::endl;
     return;
   }
-  // If only one node
-  if (this->size() == 1) {
-    std::cout << "Head: ";
-    this->head->display();
-    std::cout << std::endl;
-    return;
-  }
   // Traverse list and print all
   Node* ptr = this->head;
   while (ptr != nullptr) {
@@ -247,7 +240,7 @@ bool SinglyLinkedList::isEmpty() {
 
 Node* SinglyLinkedList::find(int index) {
   if (index < 0 || index > size()) {
-    std::cout << "Invalid index" << std::endl;
+    std::cout << "Invalid index at find" << std::endl;
     return nullptr;
   }
   Node* temp = head;
@@ -553,8 +546,9 @@ void outerMenu();
 // Main
 #include <assert.h>
 int DoublyLinkedListTests();
+int SinglyLinkedListTests();
 int main() {
-  DoublyLinkedListTests();
+  SinglyLinkedListTests();
   return 0;
 }
 int DoublyLinkedListTests() {
@@ -602,6 +596,91 @@ int DoublyLinkedListTests() {
   DNode* tailNode = dll->getTail();
   nodeData = tailNode->getData();
   assert(nodeData == 1);
+  // inserting at > 0 indices
+  dll->insert(10, 1);
+  dll->display();
+  size = dll->size();
+  assert(size == 4);
+  indexFound = dll->findIndex(10);
+  assert(indexFound == 1);
+  dll->insert(11, 1);
+  dll->insert(12, 2);
+  dll->insert(13, 3);
+  size = dll->size();
+
+  assert(size == 7);
+  indexFound = dll->findIndex(11);
+  assert(indexFound == 1);
+  indexFound = dll->findIndex(12);
+  assert(indexFound == 2);
+  indexFound = dll->findIndex(13);
+  assert(indexFound == 3);
+  indexFound = dll->findIndex(10);
+  assert(indexFound == 4);
+  dll->display();
+  // Inserting at out of bounds indices is idempotent
+  dll->insert(199, 12);
+  size = dll->size();
+  assert(size == 7);
+  // assert_insert at tail
+  dll->insert(14, 7);
+  Node* tail = dll->getTail();
+  int tailData = tail->getData();
+  assert(tailData == 14);
+  dll->display();
+  return 0;
+}
+int SinglyLinkedListTests() {
+  SinglyLinkedList* dll = new SinglyLinkedList();
+  dll->display();
+  // Assert_isEmpty!
+  bool isEmpty = dll->isEmpty();
+  assert(isEmpty == true);
+  dll->insert(1, 0);
+  dll->display();
+  // Assert_isEmpty!
+  isEmpty = dll->isEmpty();
+  assert(isEmpty == false);
+  // Assert_size!
+  int size = dll->size();
+  assert(size == 1);
+  dll->insert(2, 0);
+  dll->display();
+  // Assert_size!
+  size = dll->size();
+  assert(size == 2);
+  dll->insert(3, 0);
+  dll->display();
+  dll->insert(4, 0);
+  dll->display();
+  // Assert_contains and findIndex and find
+  bool contains = dll->contains(4);
+  assert(contains == true);
+  int indexFound = dll->findIndex(4);
+  assert(indexFound == 0);
+  Node* nodeAtIndex = dll->find(1);
+  int nodeData = nodeAtIndex->getData();
+  assert(nodeData == 3);
+  // Assert_deleteAtIndex
+  dll->deleteAtIndex(0);
+  dll->display();
+  size = dll->size();
+  assert(size == 3);
+  indexFound = dll->findIndex(4);
+  assert(indexFound == -1);
+  contains = dll->contains(4);
+  assert(contains == false);
+  nodeAtIndex = dll->find(-1);
+  assert(nodeAtIndex == nullptr);
+  // Here.
+  Node* tailNode = dll->getTail();
+  Node* headNode = dll->getHead();
+  nodeData = headNode->getData();
+  assert(nodeData == 3);
+  assert(headNode != nullptr);
+  assert(tailNode != nullptr);
+  // nodeData = tailNode->getData();
+  // assert(nodeData == 1);
   // inserting at > 0 indices
   dll->insert(10, 1);
   dll->display();
