@@ -548,7 +548,7 @@ void outerMenu();
 int DoublyLinkedListTests();
 int SinglyLinkedListTests();
 int main() {
-  SinglyLinkedListTests();
+  outerMenu();
   return 0;
 }
 int DoublyLinkedListTests() {
@@ -718,27 +718,29 @@ int SinglyLinkedListTests() {
 
 void singlyLinkedListInnerMenu() {
   int val = 0;
+  // Create the list
+  SinglyLinkedList* list = new SinglyLinkedList();
   while (val != 7) {
-    cout << "Choose an option" << std::endl
-         << "Press 1 for Insert" << std::endl
-         << "Press 2 for Delete" << std::endl
-         << "Press 3 for Display" << std::endl
-         << "Press 4 for Size" << std::endl
-         << "Press 5 for find" << std::endl
-         << "Press 6 for findindex" << std::endl;
-    std::cin >> val;
-    // Create the list
-    SinglyLinkedList* list = new SinglyLinkedList();
+    cout << "Choose an option" << endl
+         << "Press 1 for Insert" << endl
+         << "Press 2 for Delete" << endl
+         << "Press 3 for Display" << endl
+         << "Press 4 for Size" << endl
+         << "Press 5 for find" << endl
+         << "Press 6 for findindex" << endl
+         << "Press 7 to return to the main menu" << endl;
+    cin >> val;
+
     switch (val) {
       case 1: {
         int data, index;
         Node* head = list->getHead();
         Node** headref = &head;
-        cout << "Enter data" << std::endl;
-        std::cin >> data;
+        cout << "Enter data" << endl;
+        cin >> data;
 
-        cout << "Enter index" << std::endl;
-        std::cin >> index;
+        cout << "Enter index" << endl;
+        cin >> index;
 
         list->insert(data, index);
         list->display();
@@ -746,8 +748,8 @@ void singlyLinkedListInnerMenu() {
       }
       case 2: {
         int index;
-        cout << "Enter index" << std::endl;
-        std::cin >> index;
+        cout << "Enter index" << endl;
+        cin >> index;
 
         list->deleteAtIndex(index);
         list->display();
@@ -758,38 +760,43 @@ void singlyLinkedListInnerMenu() {
         break;
 
       case 4:
-        cout << "Size is " << list->size() << std::endl;
+        cout << "Size is " << list->size() << endl;
         break;
       case 5: {
         int index;
-        cout << "Enter index to find" << std::endl;
-        std::cin >> index;
+        cout << "Enter index to find" << endl;
+        cin >> index;
         Node* found = list->find(index);
         if (found != nullptr) {
-          cout << "Found " << std::endl;
+          cout << "Found " << endl;
           found->display();
         } else {
-          cout << "Not found" << std::endl;
+          cout << "Not found" << endl;
         }
         break;
       }
       case 6: {
         int data;
-        cout << "Enter data to find" << std::endl;
-        std::cin >> data;
+        cout << "Enter data to find" << endl;
+        cin >> data;
         int index = list->findIndex(data);
         if (index != -1) {
-          cout << "Found at index " << index << std::endl;
+          cout << "Found at index " << index << endl;
         } else {
-          cout << "Not found" << std::endl;
+          cout << "Not found" << endl;
         }
         break;
       }
+      default:
+        break;
     }
   }
+  delete list;
 };
 void circularLinkedListInnerMenu() {
   /**  int val = 0;
+   *       // Create the list
+      CircularLinkedList* list = new CircularLinkedList();
     while (val != 7) {
       cout << "Choose an option" << endl
            << "Press 1 for Insert" << endl
@@ -797,10 +804,10 @@ void circularLinkedListInnerMenu() {
            << "Press 3 for Display" << endl
            << "Press 4 for Size" << endl
            << "Press 5 for find" << endl
-           << "Press 6 for findindex" << endl;
+           << "Press 6 for findindex" << endl
+           << "Press 7 to return to the main menu" << endl;
       cin >> val;
-      // Create the list
-      CircularLinkedList* list = new CircularLinkedList();
+
       switch (val) {
         case 1: {
           int data, index;
@@ -852,11 +859,17 @@ void circularLinkedListInnerMenu() {
           }
           break;
         }
+        default:
+          break;
+
       }
-    }*/
+    }
+      delete list;
+    */
 }
 void doublyLinkedListInnerMenu() {
   int val = 0;
+  DoublyLinkedList* list = new DoublyLinkedList();
   while (val != 7) {
     cout << "Choose an option" << endl
          << "Press 1 for Insert" << endl
@@ -864,10 +877,10 @@ void doublyLinkedListInnerMenu() {
          << "Press 3 for Display" << endl
          << "Press 4 for Size" << endl
          << "Press 5 for find" << endl
-         << "Press 6 for findindex" << endl;
+         << "Press 6 for findindex" << endl
+         << "Press 7 to return to the main menu" << endl;
     cin >> val;
     // Create the list
-    DoublyLinkedList* list = new DoublyLinkedList();
     switch (val) {
       case 1: {
         int data, index;
@@ -921,15 +934,16 @@ void doublyLinkedListInnerMenu() {
       }
     }
   }
+  delete list;
 }
 void outerMenu() {
   int val = 0;
   while (val != 4) {
     cout << "Choose an option" << endl
-         << "Press 1 for singly linked list" << endl
+         << "Press 1 for Singly linked list" << endl
          << "Press 2 for Doubly linked list" << endl
-         << "Press 3 for Display" << endl
-         << "Press 4 for Exit" << endl;
+         << "Press 3 for Circular linked list" << endl
+         << "Press 4 to Exit" << endl;
     cin >> val;
     switch (val) {
       case 1:
