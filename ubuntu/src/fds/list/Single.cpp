@@ -2,6 +2,9 @@
 
 #include "islgr_util.h"
 #include "node.h"
+// An impl of singly to go with class. find will handle traversal at beginning,
+// end and middle. Then the insert/delete algos
+// circular single/double, will use this same strctr.
 class SinglyLinked {
  private:
   Node* head;
@@ -9,9 +12,20 @@ class SinglyLinked {
  public:
   SinglyLinked();
   ~SinglyLinked();
+  //   ops.
+  int deleteAt(int index);
+  int insertAt(int index, Node* node);
+  Node* find(int index);
+  // exercise
+  void reverse();
   //   necessary utils
   void display();
   bool isEmpty();
+  //   blanket impls. use composition to break in after parent impl.
+  int deleteBeginning();
+  int deleteEnd();
+  int insertBeginning();
+  int insertEnd();
 };
 
 // Constructor. Create an empty SinglyLinked.
@@ -37,6 +51,8 @@ void SinglyLinked::display() {
     std::cout << std::endl;
   }
 }
+
+// bin
 void tests();
 int main() { tests(); }
 
