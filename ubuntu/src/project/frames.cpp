@@ -205,6 +205,11 @@ void SinglyLinkedList::display() {
     std::cout << "List is empty" << std::endl;
     return;
   }
+  if (size() == 1) {
+    head->display();
+    std::cout << std::endl;
+    return;
+  }
   // Traverse list and print all
   Node* ptr = this->head;
   while (ptr != nullptr) {
