@@ -90,6 +90,11 @@ class Queue {
  * equal to MAX
  */
 int deleteAtIndex(int arr[], int* UB, int index, const int LB, const int MAX);
+/**
+ * Insert at an index in an array. Similar limits as delete
+ * */
+int insertAtIndex(int arr[], int* UB, int index, int element, const int LB,
+                  const int MAX);
 
 }  // namespace my_utils
 

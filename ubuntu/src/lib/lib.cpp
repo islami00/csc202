@@ -79,6 +79,25 @@ int deleteAtIndex(int arr[], int* UB, int index, const int LB, const int MAX) {
   *UB = (*UB) - 1;
   return 0;
 };
+int insertAtIndex(int arr[], int* UB, int index, int element, const int LB,
+                  const int MAX) {
+  if ((*UB) == MAX) return 1;                   // Overflow check
+  if ((index < LB) || (index > MAX)) return 2;  // Index out of bounds.
+  // Insert logic.
+  // 1. Shift every element till the index forward by one
+  // place to create space
+  int k = *UB;
+  while (k > index) {
+    arr[k] = arr[k - 1];
+    k = k - 1;
+  }
+  // 2. Assign element to the now free index.
+  arr[index] = element;
+  // 3. Raise upper bound
+  *UB = (*UB) + 1;
+
+  return 0;
+}
 // A simple stack
 Stack::Stack() { top = -1; }
 Stack::~Stack() {}
