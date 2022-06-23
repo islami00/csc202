@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include "islgr_util.h"
 #include "lib.h"
 using namespace std;
 #define MAX 9
