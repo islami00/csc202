@@ -1,6 +1,8 @@
 #define STACK_MAX 9
 #define OVERFLOW -1
 #define UNDERFLOW -2
+#include <iostream>
+
 #include "islgr_util.h"
 #include "lib.h"
 class FixedS {
@@ -19,6 +21,7 @@ class FixedS {
   bool isEmpty();
   bool isFull();
   int count();
+  void display();
 };
 
 void tests();
@@ -30,7 +33,7 @@ int main() {
 // Class
 FixedS::FixedS() { top = -1; }
 bool FixedS::isEmpty() { return top == -1; }
-bool FixedS::isFull() { return top == STACK_MAX - 1; }
+bool FixedS::isFull() { return count() == STACK_MAX; }
 int FixedS::count() { return top + 1; }
 int FixedS::peek() {
   if (isEmpty()) return UNDERFLOW;
@@ -40,7 +43,8 @@ int FixedS::push(int data) {
   if (isFull()) {
     return OVERFLOW;
   }
-  my_utils::insertAtIndex(items, &top, top + 1, data, 0, STACK_MAX);
+  top = top + 1;
+  items[top] = data;
   return 0;
 }
 int FixedS::pop() {
@@ -53,14 +57,24 @@ int FixedS::pop() {
   top -= 1;
   return last;
 }
+void FixedS::display() {
+  if (isEmpty()) {
+    std::cout << "Stack is empty" << std::endl;
+    return;
+  }
+  my_utils::prettyPrint(items, count());
+  std::cout << std::endl;
+}
 // fxs
 void tests() {
   FixedS* s = new FixedS();
+  s->display();
   EXPECT_T(s->isEmpty());
   EXPECT_T(s->count() == 0);
   // push!, peek!
   s->push(12);
   EXPECT_T(s->peek() == 12);
+  s->display();
   // pop!
   EXPECT_T(s->pop() == 12);
   EXPECT_T(s->peek() == UNDERFLOW);
@@ -71,4 +85,5 @@ void tests() {
   }
   EXPECT_T(s->isFull());
   EXPECT_T(s->peek() == STACK_MAX);
+  s->display();
 }

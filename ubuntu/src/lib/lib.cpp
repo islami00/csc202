@@ -45,9 +45,12 @@ bool is_non_negative(int number) {
 void prettyPrint(int arr[], size_t arr_size) {
   size_t lastIndex = arr_size - 1;
   for (size_t i = 0; i < arr_size; i++) {
-    if (i == 0)
+    if (i == 0) {
       std::cout << "[" << arr[i];
-    else if (i == lastIndex)
+      if (i == arr_size - 1) {
+        std::cout << "]";
+      }
+    } else if (i == lastIndex)
       std::cout << "," << arr[i] << "]";
     else
       std::cout << "," << arr[i];
@@ -79,10 +82,10 @@ int deleteAtIndex(int arr[], int* UB, int index, const int LB, const int MAX) {
   *UB = (*UB) - 1;
   return 0;
 };
-int insertAtIndex(int arr[], int* UB, int index, int element, const int LB,
-                  const int MAX) {
-  if ((*UB) == MAX) return 1;                   // Overflow check
-  if ((index < LB) || (index > MAX)) return 2;  // Index out of bounds.
+int insertAtIndex(int arr[], int* UB, int index, int element, const int $LB,
+                  const int $MAX) {
+  if ((*UB) == $MAX) return 1;                   // Overflow check
+  if ((index < $LB) || (index > $MAX)) return 2;  // Index out of bounds.
   // Insert logic.
   // 1. Shift every element till the index forward by one
   // place to create space
