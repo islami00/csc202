@@ -67,10 +67,12 @@ class Stack {
  * */
 class Queue {
  private:
-  int front;
-  int end;
   int QUEUE_SIZE;
   int* elements;
+
+ protected:
+  int front;
+  int end;
 
  public:
   Queue(int size);

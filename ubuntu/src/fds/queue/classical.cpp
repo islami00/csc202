@@ -32,4 +32,14 @@ void tests() {
   EXPECT_T(q->isFull());
   q->display();
   EXPECT_T(q->peek() == 1);
+  // dequeue full.
+  //   why?  Because end is still eq QUEUE_SIZE-1. Despite less count.
+  for (int i = 4; i > 0; i--) {
+    q->dequeue();
+    EXPECT_T(q->count() == i);
+    EXPECT_T(q->isFull());
+  }
+  q->dequeue();
+  EXPECT_T(q->count() == 0);
+  EXPECT_T(q->isEmpty());
 }
