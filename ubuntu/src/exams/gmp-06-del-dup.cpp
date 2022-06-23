@@ -23,15 +23,15 @@ int main() {
         break;
       }
     }
-    // if it's not found anywhere in sorted arr, add to sorted section
+    // if it's not found anywhere in unique arr, add to unique section
     if (!sortedFound) {
       indexCounter += 1;
       stock[indexCounter] = n;
     }
   }
   // Clear everywhere else from bottom.
-  //   using maxIndex because deleteAtIndex was modeled with ub=maxIndex, not
-  //   ub=len
+  //   using maxIndex because deleteAtIndex was modeled with ub being max index,
+  //   not ub=length
   int maxIndex = UB - 1;
   for (int k = maxIndex; k > indexCounter; k--) {
     my_utils::deleteAtIndex(stock, &maxIndex, k, LB, MAX);
