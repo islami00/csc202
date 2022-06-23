@@ -162,19 +162,20 @@ void Stack::display() {
  * */
 
 //   The queue starts off empty.
-Queue::Queue() {
-  //   The front=end which is right before the queue (-1).
+Queue::Queue(int size = 5) {
+  QUEUE_SIZE = size;
+  elements = new int[QUEUE_SIZE];
   front = end = -1;
 }
 
-Queue::~Queue() {}
+Queue::~Queue() { delete[] elements; }
 
 // We need to be able to add things to the queue
 int Queue::enqueue(int element) {
   // Overflow check
   if (isFull()) return 1;
   //   The first thing will make the front=end=0, as the init of the queue
-  if (front = -1) {
+  if (isEmpty()) {
     front = 0;
   }
   //   Other things will stretch out the end of the queue as they are appended.
@@ -186,39 +187,29 @@ int Queue::enqueue(int element) {
 int Queue::dequeue() {
   // Underflow check
   if (isEmpty()) {
+    // replace with err enum for testing.
     throw std::logic_error("Underflow in dequeuing queue");
   }
-  //   Removing something will make every other thing shift forward and shrink
-  //   our end
+  //   Front goes off, and the next is in front;
   int dequeued = elements[front];
-  for (int i = front; i < end; i++) {
-    elements[i] = elements[i + 1];
-  }
-  end -= 1;
-  //   Removing the last thing will cover up our queue and make
-  //   front=end=-1
-  if (end == -1) front = -1;
+  elements[front] = 0;
+  front += 1;
+  // When the last person leaves, reset the queue.
+  if (front == end) front = end = -1;
   return dequeued;
 }
 
 // Convenience methods
 //   isFull
-bool Queue::isFull() {
-  if (end == (QUEUE_SIZE - 1)) return true;
-  return false;
-}
+bool Queue::isFull() { return (end == (QUEUE_SIZE - 1)); }
 //   isEmpty
-bool Queue::isEmpty() {
-  if (front == -1) return true;
-  return false;
-}
+bool Queue::isEmpty() { return (front == -1 && end == -1); }
 //   display
 void Queue::display() {
   if (isEmpty()) {
     std::cout << "[| |]";
     return;
   }
-  // Doesn't handle case where i = front=end =-1;
   for (int i = front; i <= end; i++) {
     if (i == front) std::cout << "[| <- ";
     std::cout << "[" << elements[i] << "] <- ";
@@ -229,7 +220,6 @@ void Queue::display() {
 }
 //   count
 int Queue::count() {
-  // Cover case where end=front=-1
   if (isEmpty()) return 0;
   return end - front + 1;
 }

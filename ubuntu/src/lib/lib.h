@@ -62,7 +62,6 @@ class Stack {
   int change(int element, int position);
   void display();
 };
-#define QUEUE_SIZE 3
 /**
  * We need a queue
  * */
@@ -70,10 +69,11 @@ class Queue {
  private:
   int front;
   int end;
-  int elements[QUEUE_SIZE];
+  int QUEUE_SIZE;
+  int* elements;
 
  public:
-  Queue();
+  Queue(int size);
   ~Queue();
   int enqueue(int element);
   int dequeue();

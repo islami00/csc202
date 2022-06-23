@@ -6,9 +6,10 @@
 #include "lib.h"
 class DynS {
  private:
-  int* items;
   int top;
   int STACK_MAX;
+  // flexible members must be at end of class
+  int* items;
 
  public:
   DynS(int size);
@@ -38,6 +39,7 @@ DynS::DynS(int len) {
   top = -1;
   items = new int[len];
 }
+DynS::~DynS() { delete[] items; }
 bool DynS::isEmpty() { return top == -1; }
 bool DynS::isFull() { return count() == STACK_MAX; }
 int DynS::count() { return top + 1; }
