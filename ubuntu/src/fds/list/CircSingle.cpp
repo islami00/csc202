@@ -14,18 +14,21 @@ class CircSingly {
   ~CircSingly();
   //   ops.
   int deleteAt(int index);
-  int insertAt(int index, Node* node);
+  int insertAt(int index, int node);
   Node* find(int index);
   // exercise
   void reverse();
   //   necessary utils
   void display();
   bool isEmpty();
+  int size();
+  Node* getHead();
+  Node* getTail();
   //   blanket impls. use composition to break in after parent impl.
   int deleteBeginning();
   int deleteEnd();
-  int insertBeginning();
-  int insertEnd();
+  int insertBeginning(int data);
+  int insertEnd(int data);
 };
 
 // Constructor. Create an empty CircSingly.
@@ -59,9 +62,34 @@ int main() { tests(); }
 
 void tests() {
   CircSingly* l = new CircSingly();
-  // Should be empty, and output empty
+  // empty check
   bool empy = l->isEmpty();
   EXPECT_T(empy);
-  std::cout << "Empty log" << std::endl;
+  EXPECT_T(l->size() == 0);
   l->display();
+  // insert a few things at head
+  for (int i = 0; i < 2; i++) {
+    l->insertBeginning(i + 1);
+  }
+  EXPECT_T(l->getHead()->getData() == 2);
+  l->display();
+  // insert a few things at end
+  for (int i = 0; i < 2; i++) {
+    l->insertEnd(i + 1);
+  }
+  EXPECT_T(l->getTail()->getData() == 2);
+  l->display();
+  // insert a thing at a specific point
+  l->insertAt(2, 12);
+  EXPECT_T(l->find(2)->getData() == 12);
+  l->display();
+  // delete last, beginning
+  l->deleteEnd();
+  l->deleteBeginning();
+  EXPECT_T(l->getTail()->getData() == 1);
+  EXPECT_T(l->getHead()->getData() == 1);
+  l->display();
+  // delete at a specific place
+  l->deleteAt(1);
+  EXPECT_T(l->find(1)->getData() == 1);
 }
