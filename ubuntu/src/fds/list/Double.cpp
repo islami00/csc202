@@ -1,21 +1,21 @@
 #include <iostream>
 
 #include "islgr_util.h"
-#include "node.h"
+#include "dnode.h"
 // An impl of singly to go with class. find will handle traversal at beginning,
 // end and middle. Then the insert/delete algos
 // circular single/double, will use this same strctr.
-class SinglyLinked {
+class DoublyLinked {
  private:
-  Node* head;
+  DNode* head;
 
  public:
-  SinglyLinked();
-  ~SinglyLinked();
+  DoublyLinked();
+  ~DoublyLinked();
   //   ops.
   int deleteAt(int index);
-  int insertAt(int index, Node* node);
-  Node* find(int index);
+  int insertAt(int index, DNode* DNode);
+  DNode* find(int index);
   // exercise
   void reverse();
   //   necessary utils
@@ -28,19 +28,19 @@ class SinglyLinked {
   int insertEnd();
 };
 
-// Constructor. Create an empty SinglyLinked.
-SinglyLinked::SinglyLinked() { head = nullptr; }
+// Constructor. Create an empty DoublyLinked.
+DoublyLinked::DoublyLinked() { head = nullptr; }
 // Empty
-bool SinglyLinked::isEmpty() { return head == nullptr; }
+bool DoublyLinked::isEmpty() { return head == nullptr; }
 // Display.
-void SinglyLinked::display() {
+void DoublyLinked::display() {
   // Empty.
   if (isEmpty()) {
     std::cout << "List is empty" << std::endl;
     return;
   }
   // Traverse and display
-  Node* tmp = head;
+  DNode* tmp = head;
   while (tmp != nullptr) {
     // tags
     if (tmp == head) {
@@ -58,7 +58,7 @@ void tests();
 int main() { tests(); }
 
 void tests() {
-  SinglyLinked* l = new SinglyLinked();
+  DoublyLinked* l = new DoublyLinked();
   // Should be empty, and output empty
   bool empy = l->isEmpty();
   EXPECT_T(empy);

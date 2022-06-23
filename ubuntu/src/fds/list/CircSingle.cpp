@@ -5,13 +5,13 @@
 // An impl of singly to go with class. find will handle traversal at beginning,
 // end and middle. Then the insert/delete algos
 // circular single/double, will use this same strctr.
-class SinglyLinked {
+class CircSingly {
  private:
   Node* head;
 
  public:
-  SinglyLinked();
-  ~SinglyLinked();
+  CircSingly();
+  ~CircSingly();
   //   ops.
   int deleteAt(int index);
   int insertAt(int index, Node* node);
@@ -28,12 +28,12 @@ class SinglyLinked {
   int insertEnd();
 };
 
-// Constructor. Create an empty SinglyLinked.
-SinglyLinked::SinglyLinked() { head = nullptr; }
+// Constructor. Create an empty CircSingly.
+CircSingly::CircSingly() { head = nullptr; }
 // Empty
-bool SinglyLinked::isEmpty() { return head == nullptr; }
+bool CircSingly::isEmpty() { return head == nullptr; }
 // Display.
-void SinglyLinked::display() {
+void CircSingly::display() {
   // Empty.
   if (isEmpty()) {
     std::cout << "List is empty" << std::endl;
@@ -41,7 +41,7 @@ void SinglyLinked::display() {
   }
   // Traverse and display
   Node* tmp = head;
-  while (tmp != nullptr) {
+  do {
     // tags
     if (tmp == head) {
       std::cout << "Head: ";
@@ -50,7 +50,7 @@ void SinglyLinked::display() {
     tmp->display();
     std::cout << std::endl;
     tmp = tmp->getNext();
-  }
+  } while (tmp != head);
 }
 
 // bin
@@ -58,7 +58,7 @@ void tests();
 int main() { tests(); }
 
 void tests() {
-  SinglyLinked* l = new SinglyLinked();
+  CircSingly* l = new CircSingly();
   // Should be empty, and output empty
   bool empy = l->isEmpty();
   EXPECT_T(empy);
