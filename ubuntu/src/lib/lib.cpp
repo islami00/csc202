@@ -62,6 +62,23 @@ bool arr_eq(int arr1[], int arr2[], int arr1_size, int arr2_size) {
   }
   return eq;
 };
+int deleteAtIndex(int arr[], int* UB, int index, const int LB, const int MAX) {
+  if ((*UB) == LB) return 1;                    // Underflow
+  if ((index < LB) || (index > MAX)) return 2;  // Out of bounds
+
+  // Delete logic
+  // 1. Clear position
+  arr[index] = 0;
+  // 2. Move every element backwards by one place to fill space
+  int k = index + 1;
+  while (k <= (*UB)) {
+    arr[k - 1] = arr[k];
+    k = k + 1;
+  }
+  // 3. Lower UB
+  *UB = (*UB) - 1;
+  return 0;
+};
 // A simple stack
 Stack::Stack() { top = -1; }
 Stack::~Stack() {}

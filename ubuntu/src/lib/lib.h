@@ -82,6 +82,14 @@ class Queue {
   void display();
   int count();
 };
+/**
+ * Delete at an index in an array
+ * Where LB is the last index of the array,e.g (0)
+ * And MAX is the maximum Length of the array, e.g (10)
+ * And UB is the current Highest index of the array, e.g (5) - This need not be
+ * equal to MAX
+ */
+int deleteAtIndex(int arr[], int* UB, int index, const int LB, const int MAX);
 
 }  // namespace my_utils
 
