@@ -193,21 +193,22 @@ int Queue::dequeue() {
   //   Front goes off, and the next is in front;
   int dequeued = elements[front];
   elements[front] = 0;
-  front += 1;
-  // When the last person leaves, reset the queue.
-  if (front == end) front = end = -1;
+  // if the last person leaves, reset the queue.
+  if (front == end) {
+    front = end = -1;
+  } else {
+    front += 1;
+  }
   return dequeued;
 }
 
 // Convenience methods
-//   isFull
 bool Queue::isFull() { return (end == (QUEUE_SIZE - 1)); }
-//   isEmpty
 bool Queue::isEmpty() { return (front == -1 && end == -1); }
-//   display
+int Queue::peek() { return elements[front]; }
 void Queue::display() {
   if (isEmpty()) {
-    std::cout << "[| |]";
+    std::cout << "[| |]\n";
     return;
   }
   for (int i = front; i <= end; i++) {
@@ -218,7 +219,6 @@ void Queue::display() {
 
   std::cout << "\n";
 }
-//   count
 int Queue::count() {
   if (isEmpty()) return 0;
   return end - front + 1;

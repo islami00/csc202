@@ -81,6 +81,7 @@ class Queue {
   bool isEmpty();
   void display();
   int count();
+  int peek();
 };
 /**
  * Delete at an index in an array
